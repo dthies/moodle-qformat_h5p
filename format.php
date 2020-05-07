@@ -143,6 +143,12 @@ class qformat_h5p extends qformat_default {
         return $questions;
     }
 
+    /**
+     * Find read question type from content and provide appropriate converter
+     *
+     * @param object content question data
+     * @retun object import object
+     */
     public function create_content_type($content) {
         if (empty($content->library)) {
             return '';

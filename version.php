@@ -29,6 +29,3 @@ $plugin->release = '0.1.0';
 $plugin->version = 2020050100;
 $plugin->requires = 2018120300;
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->dependencies = [
-    'qformat_xml' => ANY_VERSION,
-];

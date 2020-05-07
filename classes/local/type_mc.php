@@ -38,11 +38,11 @@ defined('MOODLE_INTERNAL') || die();
  */
 class type_mc extends \qformat_default {
 
-    protected int $itemid = 0;
+    protected $itemid = 0;
 
     protected $tempdir;
 
-    protected string $template = 'qformat_h5p/questiontext';
+    protected $template = 'qformat_h5p/questiontext';
 
     public function __construct($content, $tempdir) {
 

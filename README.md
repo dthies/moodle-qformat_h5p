@@ -15,7 +15,7 @@ this format during question bank import or export.
 
 To import H5P content load a Quiz (Question Set) .h5p file or a Column
 content type file which contains some of the supported question content
-types as the import file and import. Indvidual questions will be extract
+types as the import file and import. Individual questions will be extract
 from the Quiz.
 
 Currently supports import of following H5P content types
@@ -24,7 +24,7 @@ Currently supports import of following H5P content types
 * Quiz (Question Set) - extracts supported subcontent 
 * Multichoice Question 
 * True/False Question 
-* Drag and Drop - Converts to ddmarker with which has labels, but not drag images
+* Drag and Drop
 * Fill in the Blank Question
 * Drag the Text Question
 

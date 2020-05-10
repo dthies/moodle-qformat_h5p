@@ -26,6 +26,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'H5P Content types';
-$string['pluginname_help'] = 'This extracts the questions a H5P Question Set content type and imports them';
+$string['pluginname_help'] = 'This extracts the questions from certain H5P content types and imports them';
 $string['pluginname_link'] = 'qformat/h5p';
 $string['privacy:metadata'] = 'The H5P content types question format plugin does not store any personal data.';

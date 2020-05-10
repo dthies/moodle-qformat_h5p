@@ -59,13 +59,17 @@ class type_mc extends \qformat_default {
         $qo = $this->import_headers();
         $qo->qtype = 'multichoice';
         $totalcorrect = array_sum(array_column($this->params->answers, 'correct'));
-        $qo->single = $totalcorrect == 1;
+        $qo->single = ($totalcorrect == 1);
         // Run through the answers.
         $qo->answer = array();
         $acount = 0;
         foreach ($this->params->answers as $answer) {
-            $qo->answer[$acount] = array('text' => $answer->text, 'format' => FORMAT_HTML);
-            $qo->fraction[$acount] = round((2.0 * !empty($answer->correct) - 1) / $totalcorrect, 7);
+            $qo->answer[$acount] = array('text' => html_to_text($answer->text), 'format' => FORMAT_HTML);
+            if ($qo->single) {
+                $qo->fraction[$acount] = !empty($answer->correct);
+            } else {
+                $qo->fraction[$acount] = round((2.0 * !empty($answer->correct) - 1) / $totalcorrect, 7);
+            }
             $qo->feedback[$acount] = array('text' => $answer->tipsAndFeedback->chosenFeedback, 'format' => FORMAT_HTML);
             $acount++;
         }

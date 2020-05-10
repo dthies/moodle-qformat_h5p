@@ -88,50 +88,50 @@ class qformat_h5p extends qformat_default {
                 $content = json_decode($this->get_filecontent('content/content.json'));
 
                 switch ($h5p->mainLibrary) {
-                case 'H5P.Column':
-                    return array_column($content->content, 'content');
-                case 'H5P.QuestionSet':
-                    return $content->questions;
-                case 'H5P.SingleChoiceSet':
-                    $questions = array();
-                    foreach ($content->choices as $choice) {
-                        $answers = array();
-                        foreach ($choice->answers as $key => $answer) {
-                            $answers[] = (object) array(
-                                'text' => $answer,
-                                'correct' => empty($key),
-                                'tipsAndFeedback' => (object) array(
-                                    'chosenFeedback' => empty($key) ? $content->l10n->correctText : $content->l10n->incorrectText,
+                    case 'H5P.Column':
+                        return array_column($content->content, 'content');
+                    case 'H5P.QuestionSet':
+                        return $content->questions;
+                    case 'H5P.SingleChoiceSet':
+                        $questions = array();
+                        foreach ($content->choices as $choice) {
+                            $answers = array();
+                            foreach ($choice->answers as $key => $answer) {
+                                $answers[] = (object) array(
+                                    'text' => $answer,
+                                    'correct' => empty($key),
+                                    'tipsAndFeedback' => (object) array(
+                                        'chosenFeedback' => empty($key) ? $content->l10n->correctText : $content->l10n->incorrectText,
+                                    ),
+                                );
+                            }
+                            $questions[] = (object) array(
+                                'params' => (object) array(
+                                    'question' => $choice->question,
+                                    'answers' => $answers,
                                 ),
+                                'metadata' => (object) array(
+                                    'title' => $choice->question,
+                                ),
+                                'library' => 'H5P.MultiChoice',
                             );
-                        }
-                        $questions[] = (object) array(
-                            'params' => (object) array(
-                                'question' => $choice->question,
-                                'answers' => $answers,
-                            ),
-                            'metadata' => (object) array(
-                                'title' => $choice->question,
-                            ),
-                            'library' => 'H5P.MultiChoice',
+                        };
+                        return $questions;
+                    case 'H5P.Blanks':
+                    case 'H5P.DragQuestion':
+                    case 'H5P.Multichoice':
+                    case 'H5P.TrueFalse':
+                    case 'H5P.DragText':
+                        $question = new stdClass();
+                        $question->params = $content;
+                        $question->metadata = (object) array(
+                            'title' => $h5p->title,
                         );
-                    };
-                    return $questions;
-                case 'H5P.Blanks':
-                case 'H5P.DragQuestion':
-                case 'H5P.Multichoice':
-                case 'H5P.TrueFalse':
-                case 'H5P.DragText':
-                    $question = new stdClass();
-                    $question->params = $content;
-                    $question->metadata = (object) array(
-                        'title' => $h5p->title,
-                    );
-                    $question->library = $h5p->mainLibrary;
-                    return array($question);
-                default:
-                    fulldelete($this->tempdir);
-                    return false;
+                        $question->library = $h5p->mainLibrary;
+                        return array($question);
+                    default:
+                        fulldelete($this->tempdir);
+                        return false;
                 }
 
                 return $questions;

@@ -22,7 +22,7 @@ Currently supports import of following H5P content types
 
 * Column - extracts supported subcontent 
 * Quiz (Question Set) - extracts supported subcontent 
-* Quiz (Question Set) - extracts into individual multichoice questions
+* Single Choice Set - extracts into individual multichoice questions
 * Multichoice Question 
 * True/False Question 
 * Drag and Drop

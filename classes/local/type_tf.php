@@ -41,10 +41,16 @@ class type_tf extends type_mc {
     public function import_question() {
         $qo = $this->import_headers();
         $qo->qtype = 'truefalse';
-        $qo->answer = !empty($content->params->correct);
+        $qo->answer = ($this->params->correct == "true");
         $qo->correctanswer = $qo->answer;
-        $qo->feedbackfalse = array('text' => '', 'format' => FORMAT_HTML);
-        $qo->feedbacktrue = array('text' => '', 'format' => FORMAT_HTML);
+        $qo->feedbacktrue = array(
+            'text' => $qo->answer ? $this->params->behaviour->feedbackOnCorrect : $this->params->behaviour->feedbackOnWrong,
+            'format' => FORMAT_HTML
+        );
+        $qo->feedbackfalse = array(
+            'text' => $qo->answer ? $this->params->behaviour->feedbackOnWrong : $this->params->behaviour->feedbackOnCorrect,
+            'format' => FORMAT_HTML
+        );
 
         return $qo;
     }

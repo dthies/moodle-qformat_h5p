@@ -127,7 +127,7 @@ class qformat_h5p extends qformat_default {
                         return $questions;
                     case 'H5P.Blanks':
                     case 'H5P.DragQuestion':
-                    case 'H5P.Multichoice':
+                    case 'H5P.MultiChoice':
                     case 'H5P.TrueFalse':
                     case 'H5P.DragText':
                         $question = new stdClass();

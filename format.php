@@ -90,6 +90,29 @@ class qformat_h5p extends qformat_default {
                 switch ($h5p->mainLibrary) {
                     case 'H5P.Column':
                         return array_column($content->content, 'content');
+                    case 'H5P.Dialogcards':
+                        $dialogs = array();
+                        foreach ($content->dialogs as $dialog) {
+                            $dialogs[] = (object) array(
+                                'params' => (object) array(
+                                    'question' => $dialog->text,
+                                    'answer' => $dialog->answer,
+                                    'media' => (object) array(
+                                        'type' => (object) array(
+                                            'params' => (object) array(
+                                                'file' => $dialog->image,
+                                                'contentName' => 'Image',
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                                'library' => 'Dialogcards',
+                                'metadata' => (object) array(
+                                    'title' => $dialog->text,
+                                ),
+                            );
+                        }
+                        return $dialogs;
                     case 'H5P.QuestionSet':
                         return $content->questions;
                     case 'H5P.SingleChoiceSet':
@@ -118,6 +141,7 @@ class qformat_h5p extends qformat_default {
                         };
                         return $questions;
                     case 'H5P.Blanks':
+                    case 'H5P.Dialogcards':
                     case 'H5P.DragQuestion':
                     case 'H5P.Multichoice':
                     case 'H5P.TrueFalse':
@@ -180,6 +204,8 @@ class qformat_h5p extends qformat_default {
         switch (preg_replace('/ .*/', '', $content->library)) {
             case 'H5P.Blanks':
                 return new local\type_fib($content, $this->tempdir);
+            case 'Dialogcards':
+                return new local\type_card($content, $this->tempdir);
             case 'H5P.MultiChoice':
                 return new local\type_mc($content, $this->tempdir);
             case 'H5P.TrueFalse':

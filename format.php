@@ -46,6 +46,14 @@ class qformat_h5p extends qformat_default {
         return '.h5p';
     }
 
+    public function mime_type() {
+        // This is a hack to support version before h5p support.
+        if (mimeinfo('type', $this->export_file_extension()) == 'document/unknown') {
+            return mimeinfo('type', '.zip');
+        }
+        return mimeinfo('type', $this->export_file_extension());
+    }
+
     /**
      * Return the content of a file given by its path in the tempdir directory.
      *
@@ -143,7 +151,7 @@ class qformat_h5p extends qformat_default {
                     case 'H5P.Blanks':
                     case 'H5P.Dialogcards':
                     case 'H5P.DragQuestion':
-                    case 'H5P.Multichoice':
+                    case 'H5P.MultiChoice':
                     case 'H5P.TrueFalse':
                     case 'H5P.DragText':
                         $question = new stdClass();

@@ -41,7 +41,7 @@ class type_card extends type_mc {
     public function import_question() {
         $qo = $this->import_headers();
         $qo->qtype = 'shortanswer';
-        $qo->answer[0] = $this->params->answer;
+        $qo->answer[0] = strip_tags($this->params->answer);
         $qo->feedback[0] = array(
             'text' => '',
             'format' => FORMAT_HTML,

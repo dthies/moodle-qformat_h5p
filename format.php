@@ -107,6 +107,8 @@ class qformat_h5p extends qformat_default {
                             }
                         }
                         return $actions;
+                    case 'H5P.Flashcards':
+                        $content->dialogs = $content->cards;
                     case 'H5P.Dialogcards':
                         $dialogs = array();
                         foreach ($content->dialogs as $dialog) {

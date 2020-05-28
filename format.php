@@ -98,6 +98,15 @@ class qformat_h5p extends qformat_default {
                 switch ($h5p->mainLibrary) {
                     case 'H5P.Column':
                         return array_column($content->content, 'content');
+                    case 'H5P.CoursePresentation':
+                        $actions = array();
+
+                        foreach($content->presentation->slides as $slide) {
+                            foreach (array_column($slide->elements, 'action') as $action) {
+                                $actions = array_merge($actions, $this->read_subcontent($action));
+                            }
+                        }
+                        return $actions;
                     case 'H5P.Dialogcards':
                         $dialogs = array();
                         foreach ($content->dialogs as $dialog) {
@@ -124,30 +133,7 @@ class qformat_h5p extends qformat_default {
                     case 'H5P.QuestionSet':
                         return $content->questions;
                     case 'H5P.SingleChoiceSet':
-                        $questions = array();
-                        foreach ($content->choices as $choice) {
-                            $answers = array();
-                            foreach ($choice->answers as $key => $answer) {
-                                $answers[] = (object) array(
-                                    'text' => $answer,
-                                    'correct' => empty($key),
-                                    'tipsAndFeedback' => (object) array(
-                                        'chosenFeedback' => empty($key) ? $content->l10n->correctText : $content->l10n->incorrectText,
-                                    ),
-                                );
-                            }
-                            $questions[] = (object) array(
-                                'params' => (object) array(
-                                    'question' => $choice->question,
-                                    'answers' => $answers,
-                                ),
-                                'metadata' => (object) array(
-                                    'title' => $choice->question,
-                                ),
-                                'library' => 'H5P.MultiChoice',
-                            );
-                        };
-                        return $questions;
+                        return $this->read_choices($content);
                     case 'H5P.Blanks':
                     case 'H5P.Dialogcards':
                     case 'H5P.DragQuestion':
@@ -196,6 +182,56 @@ class qformat_h5p extends qformat_default {
                 $questions[] = $qo;
             }
         }
+        return $questions;
+    }
+
+    /**
+     * Extract questions from subcontent of course presentation data
+     *
+     * @param object content
+     * @return array question data to be imported
+     */
+    public function read_subcontent($content) {
+        switch (preg_replace('/ .*/', '', $content->library)) {
+            case 'H5P.QuestionSet':
+                return $content->questions;
+            case 'H5P.SingleChoiceSet':
+                return $this->read_choices($content->params);
+            default:
+                return array($content);
+        }
+    }
+
+    /**
+     * Reformat Single choice set subcontent as multiple choice struncture
+     *
+     * @param object content
+     * @return array multichoice content to be imported
+     */
+    public function read_choices($content) {
+        $questions = array();
+        foreach ($content->choices as $choice) {
+            $answers = array();
+            foreach ($choice->answers as $key => $answer) {
+                $answers[] = (object) array(
+                    'text' => $answer,
+                    'correct' => empty($key),
+                    'tipsAndFeedback' => (object) array(
+                        'chosenFeedback' => empty($key) ? $content->l10n->correctText : $content->l10n->incorrectText,
+                    ),
+                );
+            }
+            $questions[] = (object) array(
+                'params' => (object) array(
+                    'question' => $choice->question,
+                    'answers' => $answers,
+                ),
+                'metadata' => (object) array(
+                    'title' => $choice->question,
+                ),
+                'library' => 'H5P.MultiChoice',
+            );
+        };
         return $questions;
     }
 

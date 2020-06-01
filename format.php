@@ -139,6 +139,7 @@ class qformat_h5p extends qformat_default {
                     case 'H5P.Blanks':
                     case 'H5P.Dialogcards':
                     case 'H5P.DragQuestion':
+                    case 'H5P.GuessTheAnswer':
                     case 'H5P.MultiChoice':
                     case 'H5P.TrueFalse':
                     case 'H5P.DragText':
@@ -252,6 +253,8 @@ class qformat_h5p extends qformat_default {
                 return new local\type_fib($content, $this->tempdir);
             case 'Dialogcards':
                 return new local\type_card($content, $this->tempdir);
+            case 'H5P.GuessTheAnswer':
+                return new local\type_guess($content, $this->tempdir);
             case 'H5P.MultiChoice':
                 return new local\type_mc($content, $this->tempdir);
             case 'H5P.TrueFalse':

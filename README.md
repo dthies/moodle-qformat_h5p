@@ -23,8 +23,8 @@ Currently supports import of following H5P content types
 * Column - extracts supported subcontent 
 * Quiz (Question Set) - extracts supported subcontent 
 * Single Choice Set - extracts into individual multichoice questions
-* Dialog Cards - creates a short answer question from each card
-* Flash Cards - creates a short answer question from each card
+* Dialog/Flash Cards - creates a short answer question from each card
+* Guess The Answer- creates a short answer question from the card
 * Course Presentaion - extracts supported subcontent
 * Multichoice Question 
 * True/False Question 

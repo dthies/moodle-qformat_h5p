@@ -17,7 +17,7 @@
 /**
  * Question Import for H5P Quiz content type
  *
- * @package    qformat_glossary
+ * @package    qformat_h5p
  * @copyright  2020 Daniel Thies <dethies@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -39,7 +39,21 @@ defined('MOODLE_INTERNAL') || die();
 class type_dnd extends type_mc {
 
     public function import_question() {
-        $itemid = $this->import_question_files_as_draft($this->params->question);
+        global $CFG, $USER;
+        if (!$itemid = $this->import_question_files_as_draft($this->params->question)) {
+            $fs = get_file_storage();
+            $itemid = file_get_unused_draft_itemid();
+            $filerecord = array(
+                'contextid' => context_user::instance($USER->id)->id,
+                'component' => 'user',
+                'filearea'  => 'draft',
+                'itemid'    => $itemid,
+                'filepath'  => '/',
+                'filename'  => 'background.png',
+            );
+
+            $fs->create_file_from_pathname($filerecord, $CFG->dirroot . '/question/format/h5p/defaultbackground.png');
+        }
         $qo = $this->import_headers();
         $qo->questiontext = '';
         $qo->questiontextformat = FORMAT_HTML;

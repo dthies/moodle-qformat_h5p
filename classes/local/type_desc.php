@@ -17,7 +17,7 @@
 /**
  * Question Import for H5P Quiz content type
  *
- * @package    qformat_glossary
+ * @package    qformat_h5p
  * @copyright  2020 Daniel Thies <dethies@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

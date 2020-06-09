@@ -101,7 +101,7 @@ class qformat_h5p extends qformat_default {
                     case 'H5P.CoursePresentation':
                         $actions = array();
 
-                        foreach($content->presentation->slides as $slide) {
+                        foreach ($content->presentation->slides as $slide) {
                             foreach (array_column($slide->elements, 'action') as $action) {
                                 $actions = array_merge($actions, $this->read_subcontent($action));
                             }

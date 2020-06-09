@@ -38,20 +38,20 @@ defined('MOODLE_INTERNAL') || die();
  */
 class type_mc extends \qformat_default {
 
-    /** int questiontext itemid */
+    /** @var int $itemid questiontext itemid */
     protected $itemid = 0;
 
-    /** string The temporary directory containing unzipped content type */
+    /** @var string $tempdir The temporary directory containing unzipped content type */
     protected $tempdir;
 
-    /** string The name of template used to format question */
+    /** @var string $template The name of template used to format question */
     protected $template = 'qformat_h5p/questiontext';
 
     /**
      * Constructor
      *
      * @param object $content object from content.json file
-     * @param string $temporary directory location
+     * @param string $tempdir tempoorary directory location
      */
     public function __construct($content, $tempdir) {
 
@@ -93,7 +93,7 @@ class type_mc extends \qformat_default {
     /**
      * Parse any attached media and add to filearea
      *
-     * @param object media object in content
+     * @param object $media object in content
      * @return int the itemid to be used for questiontext filearea
      */
     protected function import_media_as_draft($media) {

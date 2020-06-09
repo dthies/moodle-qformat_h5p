@@ -42,7 +42,7 @@ class type_guess extends type_mc {
      * Constructor
      *
      * @param object $content object from content.json file
-     * @param string $temporary directory location
+     * @param string $tempdir temporary directory location
      */
     public function __construct($content, $tempdir) {
 

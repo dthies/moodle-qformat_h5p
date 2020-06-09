@@ -34,18 +34,25 @@ use qformat_h5p\local;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qformat_h5p extends qformat_default {
+    /** @return bool whether this plugin provides import functionality. */
     public function provide_import() {
         return true;
     }
 
+    /** @return bool whether this plugin provides export functionality. */
     public function provide_export() {
         return false;
     }
 
+    /**
+     * @return string the file extension (including .) that is normally used for
+     * files handled by this plugin.
+     */
     public function export_file_extension() {
         return '.h5p';
     }
 
+    /** The string mime-type of the files that this plugin reads or writes. */
     public function mime_type() {
         // This is a hack to support version before h5p support.
         if (mimeinfo('type', $this->export_file_extension()) == 'document/unknown') {
@@ -191,7 +198,7 @@ class qformat_h5p extends qformat_default {
     /**
      * Extract questions from subcontent of course presentation data
      *
-     * @param object content
+     * @param object $content
      * @return array question data to be imported
      */
     public function read_subcontent($content) {
@@ -208,7 +215,7 @@ class qformat_h5p extends qformat_default {
     /**
      * Reformat Single choice set subcontent as multiple choice struncture
      *
-     * @param object content
+     * @param object $content
      * @return array multichoice content to be imported
      */
     public function read_choices($content) {
@@ -241,8 +248,8 @@ class qformat_h5p extends qformat_default {
     /**
      * Find read question type from content and provide appropriate converter
      *
-     * @param object content question data
-     * @retun object import object
+     * @param object $content question data
+     * @return object import object
      */
     public function create_content_type($content) {
         if (empty($content->library)) {

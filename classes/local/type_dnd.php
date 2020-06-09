@@ -108,7 +108,7 @@ class type_dnd extends type_mc {
     /**
      * Parse attached file used as drags or background
      *
-     * @param object question the object containing file params
+     * @param object $question the object containing file params
      * @return int the itemid to be used for filearea
      */
     protected function import_question_files_as_draft($question) {

@@ -38,20 +38,20 @@ defined('MOODLE_INTERNAL') || die();
  */
 class type_mc extends \qformat_default {
 
-    /* int questiontext itemid */
+    /** int questiontext itemid */
     protected $itemid = 0;
 
-    /* string The temporary directory containing unzipped content type */
+    /** string The temporary directory containing unzipped content type */
     protected $tempdir;
 
-    /* string The name of template used to format question */
+    /** string The name of template used to format question */
     protected $template = 'qformat_h5p/questiontext';
 
     /**
      * Constructor
      *
-     * @param object content object from content.json file
-     * @param string temporary directory location
+     * @param object $content object from content.json file
+     * @param string $temporary directory location
      */
     public function __construct($content, $tempdir) {
 
@@ -124,7 +124,6 @@ class type_mc extends \qformat_default {
     /**
      * Import parts of question common to all types
      *
-     * @param $content array h5p content object
      * @return object question object
      */
     public function import_headers() {

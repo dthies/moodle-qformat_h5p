@@ -34,7 +34,7 @@ use qformat_h5p\local;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qformat_h5p extends qformat_default {
-    /** 
+    /**
      * Imoport functionality
      *
      * @return bool whether this plugin provides import functionality.

@@ -1,4 +1,4 @@
-# H5P Quiz Format #
+# H5P Question Format #
 
 This plugin imports various h5p content types into the Moodle question
 types

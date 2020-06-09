@@ -38,6 +38,11 @@ defined('MOODLE_INTERNAL') || die();
  */
 class type_dnd extends type_mc {
 
+    /**
+     * Converts the content object to question object
+     *
+     * @return object question data
+     */
     public function import_question() {
         global $CFG, $USER;
         if (!$itemid = $this->import_question_files_as_draft($this->params->question)) {
@@ -100,6 +105,12 @@ class type_dnd extends type_mc {
         return $qo;
     }
 
+    /**
+     * Parse attached file used as drags or background
+     *
+     * @param object question the object containing file params
+     * @return int the itemid to be used for filearea
+     */
     protected function import_question_files_as_draft($question) {
         global $USER;
 

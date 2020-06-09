@@ -38,12 +38,21 @@ defined('MOODLE_INTERNAL') || die();
  */
 class type_mc extends \qformat_default {
 
+    /* int questiontext itemid */
     protected $itemid = 0;
 
+    /* string The temporary directory containing unzipped content type */
     protected $tempdir;
 
+    /* string The name of template used to format question */
     protected $template = 'qformat_h5p/questiontext';
 
+    /**
+     * Constructor
+     *
+     * @param object content object from content.json file
+     * @param string temporary directory location
+     */
     public function __construct($content, $tempdir) {
 
         $this->metadata = $content->metadata;
@@ -55,6 +64,11 @@ class type_mc extends \qformat_default {
         $this->tempdir = $tempdir;
     }
 
+    /**
+     * Converts the content object to question object
+     *
+     * @return object question data
+     */
     public function import_question() {
         $qo = $this->import_headers();
         $qo->qtype = 'multichoice';
@@ -76,6 +90,12 @@ class type_mc extends \qformat_default {
         return $qo;
     }
 
+    /**
+     * Parse any attached media and add to filearea
+     *
+     * @param object media object in content
+     * @return int the itemid to be used for questiontext filearea
+     */
     protected function import_media_as_draft($media) {
         global $USER;
 
@@ -102,7 +122,8 @@ class type_mc extends \qformat_default {
     }
 
     /**
-     * import parts of question common to all types
+     * Import parts of question common to all types
+     *
      * @param $content array h5p content object
      * @return object question object
      */

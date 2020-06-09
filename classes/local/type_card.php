@@ -38,6 +38,11 @@ defined('MOODLE_INTERNAL') || die();
  */
 class type_card extends type_mc {
 
+    /**
+     * Converts the content object to question object
+     *
+     * @return object question data
+     */
     public function import_question() {
         $qo = $this->import_headers();
         $qo->qtype = 'shortanswer';

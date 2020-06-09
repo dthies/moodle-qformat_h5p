@@ -38,7 +38,12 @@ defined('MOODLE_INTERNAL') || die();
  */
 class type_guess extends type_mc {
 
-
+    /**
+     * Constructor
+     *
+     * @param object content object from content.json file
+     * @param string temporary directory location
+     */
     public function __construct($content, $tempdir) {
 
         $this->metadata = $content->metadata;
@@ -54,6 +59,12 @@ class type_guess extends type_mc {
 
         $this->tempdir = $tempdir;
     }
+
+    /**
+     * Converts the content object to question object
+     *
+     * @return object question data
+     */
     public function import_question() {
         $qo = $this->import_headers();
         $qo->qtype = 'shortanswer';

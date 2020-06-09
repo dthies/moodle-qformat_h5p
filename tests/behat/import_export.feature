@@ -28,4 +28,3 @@ Feature: Test importing questions from H5P content type.
     And I should see "Which one of the following berries are red"
     When I press "Continue"
     Then I should see "Which one of the following berries are red"
-

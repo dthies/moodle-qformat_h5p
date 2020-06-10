@@ -104,17 +104,15 @@ class type_mc extends \qformat_default {
         }
         $fs = get_file_storage();
         $itemid = file_get_unused_draft_itemid();
-        $filepaths = array();
-        $filename = $media->type->params->contentName;
+        $filename = preg_replace('/.*\\//', '', $media->type->params->file->path);
         $filepath = $this->tempdir . '/content/' . $media->type->params->file->path;
-        $fullpath = '/' . $filename;
         $filerecord = array(
             'contextid' => context_user::instance($USER->id)->id,
             'component' => 'user',
             'filearea'  => 'draft',
             'itemid'    => $itemid,
             'filepath'  => '/images/',
-            'filename'  => preg_replace('/.*\\//', '', $media->type->params->file->path),
+            'filename'  => $filename,
         );
         $fs->create_file_from_pathname($filerecord, $filepath);
 
@@ -127,7 +125,7 @@ class type_mc extends \qformat_default {
      * @return object question object
      */
     public function import_headers() {
-        global $OUTPUT, $USER;
+        global $OUTPUT;
 
         // This routine initialises the question object.
         $qo = $this->defaultquestion();

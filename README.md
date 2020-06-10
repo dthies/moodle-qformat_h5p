@@ -5,7 +5,7 @@ types
 
 Certain h5p content types are able to be translated into questions
 using standard Moodle question types. Not all h5p content types will
-be supported since they do not all have analogous Moode question types
+be supported since they do not all have analogous Moodle question types
 with similar functionality. There will be some unavoidable differences
 in behaviour.
 

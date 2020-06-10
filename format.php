@@ -95,8 +95,6 @@ class qformat_h5p extends qformat_default {
      * @return mixed contents array or false on failure
      */
     public function readdata($filename) {
-        global $CFG;
-
         $uniquecode = time();
         $this->tempdir = make_temp_directory('h5p_import/' . $uniquecode);
         if (is_readable($filename)) {

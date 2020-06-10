@@ -47,8 +47,6 @@ class type_dtw extends type_mc {
      * @return object question data
      */
     public function import_question() {
-        global $OUTPUT;
-
         // Locate answers and replace.
         preg_match_all('/\\*([^\\*]+)\\*/', $this->params->textField, $answers);
 

@@ -61,7 +61,7 @@ class type_drag extends type_mc {
         $qo->drops = array();
         $height = 4;
         $width = 6;
-        foreach ($this->params->question->task->dropZones as $dropindex => $zone) {
+        foreach ($this->params->question->task->dropZones as $zone) {
             $qo->drops[] = array(
                 'choice' => reset($zone->correctElements) + 1,
                 'shape' => 'rectangle',

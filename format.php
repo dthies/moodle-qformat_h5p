@@ -151,13 +151,7 @@ class qformat_h5p extends qformat_default {
                         return $content->questions;
                     case 'H5P.SingleChoiceSet':
                         return $this->read_choices($content);
-                    case 'H5P.Blanks':
-                    case 'H5P.Dialogcards':
-                    case 'H5P.DragQuestion':
-                    case 'H5P.GuessTheAnswer':
-                    case 'H5P.MultiChoice':
-                    case 'H5P.TrueFalse':
-                    case 'H5P.DragText':
+                    default:
                         $question = new stdClass();
                         $question->params = $content;
                         $question->metadata = (object) array(
@@ -165,9 +159,6 @@ class qformat_h5p extends qformat_default {
                         );
                         $question->library = $h5p->mainLibrary;
                         return array($question);
-                    default:
-                        fulldelete($this->tempdir);
-                        return false;
                 }
 
                 return $questions;

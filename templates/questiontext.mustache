@@ -36,8 +36,20 @@
     }
 }}
 {{# media }}
+    {{# type.params.file }}
     <img src="@@PLUGINFILE@@/{{ type.params.file.path }}" alt="{{ type.params.alt }}" class="img-responsive p-2">
+    {{/ type.params.file }}
+    {{^ type.params.file }}
+    <video controls="true">{{# type.params.sources }}
+        <source src="@@PLUGINFILE@@/{{ path }}" alt="{{ type.params.alt }}" class="img-responsive p-2">
+    {{/ type.params.sources }}</video>
+    {{/ type.params.file }}
 {{/ media }}
+{{# hasaudio }}<div><audio controls="true">
+    {{# audio }}
+    <source src="@@PLUGINFILE@@/{{ path }}">
+    {{/ audio }}{{ path }}</audio></div>
+{{/ hasaudio }}
 <div class="h5p-questiontext">
     {{{ questiontext }}}
 </div>

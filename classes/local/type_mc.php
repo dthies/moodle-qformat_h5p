@@ -96,6 +96,39 @@ class type_mc extends \qformat_default {
      * @param object $media object in content
      * @return int the itemid to be used for questiontext filearea
      */
+    protected function import_sources_as_draft($media) {
+        global $USER;
+
+        if (empty($media)) {
+            return '';
+        }
+        $fs = get_file_storage();
+        if (empty($this->itemid)) {
+            $this->itemid = file_get_unused_draft_itemid();
+        }
+        foreach ($media as  $source) {
+            $filename = preg_replace('/.*\\//', '', $source->path);
+            $filepath = $this->tempdir . '/content/' . $source->path;
+            $filerecord = array(
+                'contextid' => context_user::instance($USER->id)->id,
+                'component' => 'user',
+                'filearea'  => 'draft',
+                'itemid'    => $this->itemid,
+                'filepath'  => preg_replace('/[^\\/]*$/', '', '/' . $source->path),
+                'filename'  => $filename,
+            );
+            $fs->create_file_from_pathname($filerecord, $filepath);
+        }
+
+        return $this->itemid;
+    }
+
+    /**
+     * Parse any attached media and add to filearea
+     *
+     * @param object $media object in content
+     * @return int the itemid to be used for questiontext filearea
+     */
     protected function import_media_as_draft($media) {
         global $USER;
 
@@ -138,14 +171,26 @@ class type_mc extends \qformat_default {
         if (!empty($this->params->media)) {
             $context->media = $this->params->media;
         }
+        if (!empty($this->params->audio)) {
+            $context->audio = $this->params->audio;
+            $context->hasaudio = true;
+        }
         if (!empty($this->params->question) &&
             !is_object($this->params->question)) {
-            $context->questiontext = $this->params->question;
+            $context->questiontext = strip_tags($this->params->question, '<div><p><h1><h2><h3><h4><h5><h6><span><strong><b><i><em>');
         }
 
         // Import with media file.
-        if (!empty($context->media) && $itemid = $this->import_media_as_draft($context->media)) {
-            $qo->questiontextitemid = $itemid;
+        if (!empty($context->media)) {
+            if (!$this->itemid = $this->import_media_as_draft($context->media)) {
+                $this->itemid = $this->import_sources_as_draft($context->media->type->params->sources);
+            }
+        }
+        if (!empty($context->audio) && $itemid = $this->import_sources_as_draft($context->audio)) {
+            $this->itemid = $itemid;
+        }
+        if (!empty($this->itemid)) {
+            $qo->questiontextitemid = $this->itemid;
         }
         $qo->questiontext = $OUTPUT->render_from_template($this->template, $context);
 

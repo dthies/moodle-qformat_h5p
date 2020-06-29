@@ -106,7 +106,7 @@ class type_mc extends \qformat_default {
         if (empty($this->itemid)) {
             $this->itemid = file_get_unused_draft_itemid();
         }
-        foreach ($media as  $source) {
+        foreach ($media as $source) {
             $filename = preg_replace('/.*\\//', '', $source->path);
             $filepath = $this->tempdir . '/content/' . $source->path;
             $filerecord = array(
@@ -177,7 +177,10 @@ class type_mc extends \qformat_default {
         }
         if (!empty($this->params->question) &&
             !is_object($this->params->question)) {
-            $context->questiontext = strip_tags($this->params->question, '<div><p><h1><h2><h3><h4><h5><h6><span><strong><b><i><em>');
+            $context->questiontext = strip_tags(
+                $this->params->question,
+                '<div><p><h1><h2><h3><h4><h5><h6><span><strong><b><i><em>'
+            );
         }
 
         // Import with media file.

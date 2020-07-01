@@ -1,17 +1,17 @@
 # H5P Question Format #
 
-This plugin imports various h5p content types into the Moodle question
-types
+This plugin imports various H5P content types into Moodle question
+types.
 
-Certain h5p content types are able to be translated into questions
-using standard Moodle question types. Not all h5p content types will
+Certain H5P content types are able to be translated into questions
+using standard Moodle question types. Not all H5P content types will
 be supported since they do not all have analogous Moodle question types
 with similar functionality. There will be some unavoidable differences
 in behaviour.
 
 To install copy this directory to question/format/h5p in Moodle directory
 structure. Login as admin to complete plugin installation.  Then select
-this format during question bank import or export.
+this format during question bank import.
 
 To import H5P content load a Quiz (Question Set) .h5p file or a Column
 content type file which contains some of the supported question content
@@ -20,17 +20,18 @@ from the Quiz.
 
 Currently supports import of following H5P content types
 
-* Column - extracts supported subcontent 
-* Quiz (Question Set) - extracts supported subcontent 
+* Column - extracts supported subcontent
+* Interactive Video - extracts supported subcontent
+* Quiz (Question Set) - extracts supported subcontent
 * Single Choice Set - extracts into individual multichoice questions
 * Dialog/Flash Cards - creates a short answer question from each card
 * Guess The Answer- creates a short answer question from the card
 * Course Presentaion - extracts supported subcontent
-* Multichoice Question 
-* True/False Question 
-* Drag and Drop
-* Fill in the Blank Question
-* Drag the Text Question
+* Multichoice Question - creates a multichoice question
+* True/False Question - creates a true false question
+* Drag and Drop Question - creates a Drag and drop onto image question
+* Fill in the Blank Question - creates a embedded answer (cloze) question with embedded short answer
+* Drag the Text Question - creates a Drag and drop into text question
 
 ## License ##
 

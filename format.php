@@ -148,6 +148,8 @@ class qformat_h5p extends qformat_default {
                             );
                         }
                         return $dialogs;
+                    case 'H5P.InteractiveVideo':
+                        return array_column($content->interactiveVideo->assets->interactions, 'action');
                     case 'H5P.QuestionSet':
                         return $content->questions;
                     case 'H5P.SingleChoiceSet':

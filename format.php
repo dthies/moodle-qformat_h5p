@@ -273,6 +273,10 @@ class qformat_h5p extends qformat_default {
                 return new local\type_drag($content, $this->tempdir);
             case 'H5P.DragText':
                 return new local\type_dtw($content, $this->tempdir);
+            case 'H5P.Essay':
+                return new local\type_essay($content, $this->tempdir);
+            case 'H5P.MarkTheWords':
+                return new local\type_mtw($content, $this->tempdir);
             default:
                 return '';
                 return new local\type_desc($content, $this->tempdir); // This is more helpful for debugging.

@@ -21,17 +21,19 @@ from the Quiz.
 Currently supports import of following H5P content types
 
 * Column - extracts supported subcontent
+* Course Presentaion - extracts supported subcontent
 * Interactive Video - extracts supported subcontent
 * Quiz (Question Set) - extracts supported subcontent
 * Single Choice Set - extracts into individual multichoice questions
 * Dialog/Flash Cards - creates a short answer question from each card
 * Guess The Answer- creates a short answer question from the card
-* Course Presentaion - extracts supported subcontent
 * Multichoice Question - creates a multichoice question
 * True/False Question - creates a true false question
 * Drag and Drop Question - creates a Drag and drop onto image question
+* Essay - creates an essay question
 * Fill in the Blank Question - creates a embedded answer (cloze) question with embedded short answer
 * Drag the Text Question - creates a Drag and drop into text question
+* Mark The Words - Creates Word select if that question type is installed
 
 ## License ##
 

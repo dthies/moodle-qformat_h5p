@@ -197,6 +197,26 @@ class type_mc extends \qformat_default {
         }
         $qo->questiontext = $OUTPUT->render_from_template($this->template, $context);
 
+        foreach ($this->params->overallFeedback as $feedback) {
+            if (($feedback->from === 0) && ($feedback->to < 100)) {
+                $qo->incorrectfeedback = array(
+                    'text' => $feedback->feedback,
+                    'format' => FORMAT_HTML,
+                );
+            }
+            if (($feedback->from === 1) && ($feedback->to === 99)) {
+                $qo->partiallycorrectfeedback = array(
+                    'text' => $feedback->feedback,
+                    'format' => FORMAT_HTML,
+                );
+            }
+            if (($feedback->from > 0) && ($feedback->to === 100)) {
+                $qo->correctfeedback = array(
+                    'text' => $feedback->feedback,
+                    'format' => FORMAT_HTML,
+                );
+            }
+        }
         return $qo;
     }
 }

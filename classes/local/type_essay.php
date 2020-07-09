@@ -60,7 +60,7 @@ class type_essay extends type_mc {
         $qo->graderinfo = array(
             'text' => $OUTPUT->render_from_template('qformat_h5p/graderinfo', array(
                 'keywords' => $this->params->keywords,
-            ),),
+            )),
             'format' => FORMAT_HTML,
         );
         $qo->responsetemplate = array(

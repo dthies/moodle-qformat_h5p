@@ -55,6 +55,7 @@ matrix:
 
 before_install:
   - phpenv config-rm xdebug.ini
+  - phpenv config-add tests/fixtures/php.ini
   - nvm install 14.1
   - nvm use 14.1
   - cd ../..

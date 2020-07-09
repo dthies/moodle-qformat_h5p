@@ -37,6 +37,11 @@ defined('MOODLE_INTERNAL') || die();
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class type_dnd extends type_mc {
+    /** @var int height of background in hectopixels */
+    protected $height = 4;
+
+    /** @var int width  of background in hectopixels */
+    protected $width = 6;
 
     /**
      * Converts the content object to question object
@@ -45,19 +50,25 @@ class type_dnd extends type_mc {
      */
     public function import_question() {
         global $CFG, $USER;
-        if (!$itemid = $this->import_question_files_as_draft($this->params->question)) {
-            $fs = get_file_storage();
-            $itemid = file_get_unused_draft_itemid();
-            $filerecord = array(
-                'contextid' => context_user::instance($USER->id)->id,
-                'component' => 'user',
-                'filearea'  => 'draft',
-                'itemid'    => $itemid,
-                'filepath'  => '/',
-                'filename'  => 'background.png',
-            );
 
-            $fs->create_file_from_pathname($filerecord, $CFG->dirroot . '/question/format/h5p/defaultbackground.png');
+        // Get prescribed dimensions of background.
+        $this->height = $this->params->question->settings->size->height / 100;
+        $this->width = $this->params->question->settings->size->width / 100;
+        if (empty($this->params->question->settings->background)) {
+            require_once($CFG->libdir . '/gdlib.php');
+            $background = imagecreate(
+                $this->params->question->settings->size->width,
+                $this->params->question->settings->size->height
+            );
+            imagecolorallocate($background, 255, 255, 255);
+            imagepng($background, $this->tempdir . '/content/images/background.png');
+            $this->params->question->settings->background = (object) array(
+                'path' => 'images/background.png',
+            );
+        }
+
+        if (!$itemid = $this->import_question_files_as_draft($this->params->question)) {
+            return '';
         }
         $qo = $this->import_headers();
         $qo->questiontext = '';
@@ -90,16 +101,14 @@ class type_dnd extends type_mc {
             }
         }
         $qo->drops = array();
-        $height = 4;
-        $width = 6;
         foreach ($this->params->question->task->dropZones as $zone) {
             $qo->drops[] = array(
                 'choice' => reset($zone->correctElements) + 1,
-                'xleft' => round($zone->x * $width),
-                'ytop' => round($zone->y * $height),
+                'xleft' => round($zone->x * $this->width),
+                'ytop' => round($zone->y * $this->height),
                 'droplabel' => !empty($zone->showLabel) ? strip_tags($zone->label) : '',
-                'coords' => round($zone->x * $width) . ',' . round($zone->y * $height). ';' . round($zone->width * $width) . ',' .
-                round($zone->height * $height),
+                'coords' => round($zone->x * $this->width) . ',' . round($zone->y * $this->height). ';' . round($zone->width * $this->width) . ',' .
+                round($zone->height * $this->height),
             );
         }
         return $qo;
@@ -116,8 +125,12 @@ class type_dnd extends type_mc {
 
         if (!empty($question->settings->background)) {
             $filepath = $this->tempdir . '/content/' . $question->settings->background->path;
+            $height = $question->settings->size->height;
+            $width = $question->settings->size->width;
         } else if (!empty($question->type->params->file)) {
             $filepath = $this->tempdir . '/content/' . $question->type->params->file->path;
+            $height = $question->height * 20;
+            $width = $question->width * 20;
         } else {
             return '';
         }
@@ -133,7 +146,12 @@ class type_dnd extends type_mc {
             'filename'  => preg_replace('/.*\\//', '', $filepath),
         );
 
-        $fs->create_file_from_pathname($filerecord, $filepath);
+        $file = $fs->create_file_from_pathname($filerecord, $filepath);
+
+        // Resize the image to desired size.
+        $itemid = file_get_unused_draft_itemid();
+        $filerecord['itemid'] = $itemid;
+        $fs->create_file_from_string($filerecord, $file->resize_image($width, $height));
 
         return $itemid;
     }

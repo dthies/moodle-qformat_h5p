@@ -270,7 +270,6 @@ class qformat_h5p extends qformat_default {
                 return new local\type_tf($content, $this->tempdir);
             case 'H5P.DragQuestion':
                 return new local\type_dnd($content, $this->tempdir);
-                return new local\type_drag($content, $this->tempdir);
             case 'H5P.DragText':
                 return new local\type_dtw($content, $this->tempdir);
             case 'H5P.Essay':

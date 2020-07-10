@@ -56,7 +56,7 @@ class type_fib extends type_mc {
 
         // Import media file.
         $context = new stdClass();
-        $context->questiontext = implode(' ', $questions);
+        $context->questiontext = '<div>' . implode('</div><div>', $questions) . '</div>';
         if (!empty($this->params->media) && $itemid = $this->import_media_as_draft($this->params->media)) {
             $context->media = $this->params->media;
             $questiontext['questiontextitemid'] = $itemid;

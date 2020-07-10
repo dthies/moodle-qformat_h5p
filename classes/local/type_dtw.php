@@ -55,7 +55,8 @@ class type_dtw extends type_mc {
             $this->params->question = preg_replace( '/\\*([^\\*]+)\\*/', "[[$i]]", $this->params->question, 1);
         }
 
-        $this->params->question = '<div>'. $this->params->taskDescription . '</div><div>' . $this->params->question . '</div>';
+        $this->params->question = '<div>'. $this->params->taskDescription . '</div>' .
+            preg_replace('/(.+)$/m', '<div>$1</div>', $this->params->question);
         $qo = $this->import_headers();
         $qo->qtype = 'ddwtos';
         $qo->choices = array();

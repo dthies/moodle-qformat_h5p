@@ -83,6 +83,8 @@ class type_fib extends type_mc {
         $qo->questiontextformat = FORMAT_HTML;
         $qo->questiontext = $qo->questiontext['text'];
 
+        $qo->generalfeedbackformat = FORMAT_HTML;
+        $qo->generalfeedback = '';
         return $qo;
     }
 

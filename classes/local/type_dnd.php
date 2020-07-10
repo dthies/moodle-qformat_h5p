@@ -107,8 +107,8 @@ class type_dnd extends type_mc {
                 'xleft' => round($zone->x * $this->width),
                 'ytop' => round($zone->y * $this->height),
                 'droplabel' => !empty($zone->showLabel) ? strip_tags($zone->label) : '',
-                'coords' => round($zone->x * $this->width) . ',' . round($zone->y * $this->height). ';' . round($zone->width * $this->width) . ',' .
-                round($zone->height * $this->height),
+                'coords' => round($zone->x * $this->width) . ',' . round($zone->y * $this->height). ';' .
+                    round($zone->width * $this->width) . ',' .  round($zone->height * $this->height),
             );
         }
         return $qo;

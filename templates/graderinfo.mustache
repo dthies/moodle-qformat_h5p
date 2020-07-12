@@ -15,26 +15,22 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template qformat/h5p
+    @template qformat_h5p/graderinfo
 
-    Question text template.
-
-    Context variables required for this template:
-    * questiontext - The name of the site
+    Grader info template.
 
     Example context (json):
     {
-        "questiontext": "Does Moodle do H5P?",
         "keywords": [
             {
                 "options": {
                     "points": 10,
-                    "occurrences":3,
-                    "caseSensitive":true,
-                    "forgiveMistakes":false,
+                    "occurrences": 3,
+                    "caseSensitive": true,
+                    "forgiveMistakes": false,
                     "feedbackMissed": "To summarize the book, you should really mention the main character by name at least once.",
                  },
-                 "keyword":"Bilbo",
+                 "keyword": "Bilbo",
             }
         ]
     }

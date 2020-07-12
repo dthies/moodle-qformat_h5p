@@ -1,13 +1,16 @@
 # H5P Question Format #
 
-This plugin imports various H5P content types into Moodle question
-types.
+This plugin imports various H5P content types into Moodle question types.
 
 Certain H5P content types are able to be translated into questions
 using standard Moodle question types. Not all H5P content types will
 be supported since they do not all have analogous Moodle question types
 with similar functionality. There will be some unavoidable differences
 in behaviour.
+
+If you do not have access to install this or would like to use it or
+related prototypes without installing, you can create an account at
+moodle.openlearner.org and export the questions from there to your site.
 
 To install copy this directory to question/format/h5p in Moodle directory
 structure. Login as admin to complete plugin installation.  Then select

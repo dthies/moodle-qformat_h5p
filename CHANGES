@@ -1,6 +1,11 @@
-1.0 Beta 5 Fix formatting of Drag the Words. Implement overall feedback import.
+1.0 Beta 5 Fix formatting of Drag the Words. Implement overall feedback
+    import. The styles file was removed that made labels visible on
+    dropzones in order to prevent changes to existing questions on
+    installation. The CSS should be added to individual site themes
+    if desired.
 
-1.0 Beta 4 Support Essay and Mark Text content types. Improved Drag and Drop placement. Handle overall feedback.
+1.0 Beta 4 Support Essay and Mark Text content types. Improved Drag and
+    Drop placement. Handle overall feedback.
 
 1.0 Beta 3 Add Interactive Video support.
 

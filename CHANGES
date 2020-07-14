@@ -1,3 +1,5 @@
+1.0 Beta 6 Stop video player appearing when media absent
+
 1.0 Beta 5 Fix formatting of Drag the Words. Implement overall feedback
     import. The styles file was removed that made labels visible on
     dropzones in order to prevent changes to existing questions on

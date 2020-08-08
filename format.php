@@ -111,6 +111,15 @@ class qformat_h5p extends qformat_default {
                 $content = json_decode($this->get_filecontent('content/content.json'));
 
                 switch ($h5p->mainLibrary) {
+                    case 'H5P.InteractiveBook':
+                        $content->content = array_reduce(
+                            $content->chapters,
+                            function($carry, $content) {
+                                return array_merge($carry, $content->params->content);
+                            },
+                            array()
+                        );
+                        return array_column($content->content, 'content');
                     case 'H5P.Column':
                         return array_column($content->content, 'content');
                     case 'H5P.CoursePresentation':

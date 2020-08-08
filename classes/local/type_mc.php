@@ -187,6 +187,7 @@ class type_mc extends \qformat_default {
         if (!empty($context->media)) {
             if (!$this->itemid = $this->import_media_as_draft($context->media)) {
                 $this->itemid = $this->import_sources_as_draft($context->media->type->params->sources);
+                $context->hasvideo = !empty($context->media->type->params->sources);
             }
         }
         if (!empty($context->audio) && $itemid = $this->import_sources_as_draft($context->audio)) {

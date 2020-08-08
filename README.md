@@ -25,6 +25,7 @@ Currently supports import of following H5P content types
 
 * Column - extracts supported subcontent
 * Course Presentaion - extracts supported subcontent
+* Interactive Book - extracts supported subcontent
 * Interactive Video - extracts supported subcontent
 * Quiz (Question Set) - extracts supported subcontent
 * Single Choice Set - extracts into individual multichoice questions

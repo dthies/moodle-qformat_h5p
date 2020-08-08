@@ -40,11 +40,11 @@
     <img src="@@PLUGINFILE@@/{{ type.params.file.path }}" alt="{{ type.params.alt }}" class="img-responsive p-2">
     {{/ type.params.file }}
     {{# type.params }}
-       {{^ type.params.file }}
+       {{# hasvideo }}
        <video controls>{{# type.params.sources }}
            <source src="@@PLUGINFILE@@/{{ path }}" alt="{{ type.params.alt }}" class="img-responsive p-2">
        {{/ type.params.sources }}</video>
-       {{/ type.params.file }}
+       {{/ hasvideo }}
     {{/ type.params }}
 {{/ media }}
 {{# hasaudio }}<div><audio controls="true">

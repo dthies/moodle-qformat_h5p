@@ -41,6 +41,11 @@ defined('MOODLE_INTERNAL') || die();
  */
 class type_afib extends type_fib {
 
+    /**
+     * Preprocess context
+     *
+     * @return Object $context
+     */
     public function prepare_context() {
         $question = $this->params->content->blanksText;
 

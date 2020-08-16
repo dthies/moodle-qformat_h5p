@@ -39,16 +39,9 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2020 Daniel Thies <dethies@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class type_afib extends type_mc {
+class type_afib extends type_fib {
 
-    /**
-     * Converts the content object to question object
-     *
-     * @return object question data
-     */
-    public function import_question() {
-        global $OUTPUT;
-
+    public function prepare_context() {
         $question = $this->params->content->blanksText;
 
         // Remove the emphasis which is not used.
@@ -86,34 +79,6 @@ class type_afib extends type_mc {
         // Import media file.
         $context = new stdClass();
         $context->questiontext = '<div>' . $this->params->content->task .'</div><div>' . $question . '</div>';
-        if (!empty($this->params->media) && $itemid = $this->import_media_as_draft($this->params->media)) {
-            $context->media = $this->params->media;
-            $questiontext['questiontextitemid'] = $itemid;
-            $this->itemid = $itemid;
-        }
-        $questiontext['text'] = $OUTPUT->render_from_template($this->template, $context);
-
-        question_bank::get_qtype('multianswer');
-
-        $qo = qtype_multianswer_extract_question($questiontext);
-        $errors = qtype_multianswer_validate_question($qo);
-        if ($errors) {
-            $this->error(get_string('invalidmultianswerquestion', 'qtype_multianswer', implode(' ', $errors)));
-            return null;
-        }
-
-        // Question name.
-        $qo->name = $this->clean_question_name($this->metadata->title);
-
-        $qo->qtype = 'multianswer';
-        if (!empty($this->itemid)) {
-            $qo->questiontextitemid = $this->itemid;
-        }
-        $qo->questiontextformat = FORMAT_HTML;
-        $qo->questiontext = $qo->questiontext['text'];
-
-        $qo->generalfeedbackformat = FORMAT_HTML;
-        $qo->generalfeedback = '';
-        return $qo;
+        return $context;
     }
 }

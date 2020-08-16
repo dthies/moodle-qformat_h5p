@@ -49,14 +49,7 @@ class type_fib extends type_mc {
     public function import_question() {
         global $OUTPUT;
 
-        $questions = preg_replace('/\\*([^\\*]+)\\*/', '{1:SHORTANSWER:~%100%$1}', $this->params->questions);
-        $questiontext = array(
-            'format' => FORMAT_HTML,
-        );
-
-        // Import media file.
-        $context = new stdClass();
-        $context->questiontext = '<div>' . implode('</div><div>', $questions) . '</div>';
+        $context = $this->prepare_context();
         if (!empty($this->params->media) && $itemid = $this->import_media_as_draft($this->params->media)) {
             $context->media = $this->params->media;
             $questiontext['questiontextitemid'] = $itemid;
@@ -88,4 +81,21 @@ class type_fib extends type_mc {
         return $qo;
     }
 
+    /**
+     * Preprocess context
+     *
+     * @return Object $context
+     */
+    public function prepare_context() {
+        $questions = preg_replace('/\\*([^\\*]+)\\*/', '{1:SHORTANSWER:~%100%$1}', $this->params->questions);
+        $questiontext = array(
+            'format' => FORMAT_HTML,
+        );
+
+        // Import media file.
+        $context = new stdClass();
+        $context->questiontext = '<div>' . implode('</div><div>', $questions) . '</div>';
+
+        return $context;
+    }
 }

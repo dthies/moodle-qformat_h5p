@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'qformat_h5p';
-$plugin->release = '1.0.1';
-$plugin->version = 2020071501;
+$plugin->release = '1.0.2';
+$plugin->version = 2020071502;
 $plugin->requires = 2018051700;
 $plugin->maturity = MATURITY_STABLE;

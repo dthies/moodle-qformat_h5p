@@ -35,7 +35,10 @@ Currently supports import of following H5P content types
 * True/False Question - creates a true false question
 * Drag and Drop Question - creates a Drag and drop onto image question
 * Essay - creates an essay question
-* Fill in the Blank Question - creates a embedded answer (cloze) question with embedded short answer
+* Fill in the Blank Question - creates a embedded answer (cloze) question 
+with embedded short answer
+* Advanced Fill in the Blanks Question - creates a embedded answer (cloze)
+question with embedded short answer or mulitchoice subquestions
 * Drag the Text Question - creates a Drag and drop into text question
 * Mark The Words - Creates Word select if that question type is installed
 

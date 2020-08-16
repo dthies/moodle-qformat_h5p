@@ -267,6 +267,8 @@ class qformat_h5p extends qformat_default {
             return '';
         }
         switch (preg_replace('/ .*/', '', $content->library)) {
+            case 'H5P.AdvancedBlanks':
+                return new local\type_afib($content, $this->tempdir);
             case 'H5P.Blanks':
                 return new local\type_fib($content, $this->tempdir);
             case 'Dialogcards':

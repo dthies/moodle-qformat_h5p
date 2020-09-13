@@ -127,6 +127,7 @@ class qformat_h5p extends qformat_default {
      *
      * @param string $library The main library for content.
      * @param object $content The content object.
+     * @param string $title default title for question
      * @return array (of objects) question objects.
      */
     public function read_content($library, $content, $title) {
@@ -146,7 +147,11 @@ class qformat_h5p extends qformat_default {
             case 'H5P.BranchingScenario':
                 $questions = array();
                 foreach ($content->branchingScenario->content as $subcontent) {
-                    $questions += $this->read_content(preg_replace('/ .*/', '', $subcontent->type->library), $subcontent->type->params, $title);
+                    $questions += $this->read_content(
+                        preg_replace('/ .*/', '', $subcontent->type->library),
+                        $subcontent->type->params,
+                        $title
+                    );
                 }
                 return $questions;
             case 'H5P.Column':

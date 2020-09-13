@@ -23,6 +23,7 @@ from the Quiz.
 
 Currently supports import of following H5P content types
 
+* Branching Scenario - extracts supported subcontent
 * Column - extracts supported subcontent
 * Course Presentaion - extracts supported subcontent
 * Interactive Book - extracts supported subcontent

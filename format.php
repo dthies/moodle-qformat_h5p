@@ -107,73 +107,10 @@ class qformat_h5p extends qformat_default {
             if ($packer->extract_to_pathname($this->tempdir . '/content.zip', $this->tempdir)) {
                 $h5p = json_decode($this->get_filecontent('h5p.json'));
 
-                $questions = array();
                 $content = json_decode($this->get_filecontent('content/content.json'));
 
-                switch ($h5p->mainLibrary) {
-                    case 'H5P.InteractiveBook':
-                        $content->content = array_reduce(
-                            $content->chapters,
-                            function($carry, $content) {
-                                return array_merge($carry, $content->params->content);
-                            },
-                            array()
-                        );
-                        return array_column($content->content, 'content');
-                    case 'H5P.Column':
-                        return array_column($content->content, 'content');
-                    case 'H5P.CoursePresentation':
-                        $actions = array();
+                return $this->read_content($h5p->mainLibrary, $content, $h5p->title);
 
-                        foreach ($content->presentation->slides as $slide) {
-                            foreach (array_column($slide->elements, 'action') as $action) {
-                                $actions = array_merge($actions, $this->read_subcontent($action));
-                            }
-                        }
-                        return $actions;
-                    case 'H5P.Flashcards':
-                        $content->dialogs = $content->cards;
-                    case 'H5P.Dialogcards':
-                        $dialogs = array();
-                        foreach ($content->dialogs as $dialog) {
-                            $dialogs[] = (object) array(
-                                'params' => (object) array(
-                                    'question' => $dialog->text,
-                                    'answer' => $dialog->answer,
-                                    'audio' => $dialog->audio,
-                                    'media' => (object) array(
-                                        'type' => (object) array(
-                                            'params' => (object) array(
-                                                'file' => $dialog->image,
-                                                'contentName' => 'Image',
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                                'library' => 'Dialogcards',
-                                'metadata' => (object) array(
-                                    'title' => $dialog->text,
-                                ),
-                            );
-                        }
-                        return $dialogs;
-                    case 'H5P.InteractiveVideo':
-                        return array_column($content->interactiveVideo->assets->interactions, 'action');
-                    case 'H5P.QuestionSet':
-                        return $content->questions;
-                    case 'H5P.SingleChoiceSet':
-                        return $this->read_choices($content);
-                    default:
-                        $question = new stdClass();
-                        $question->params = $content;
-                        $question->metadata = (object) array(
-                            'title' => $h5p->title,
-                        );
-                        $question->library = $h5p->mainLibrary;
-                        return array($question);
-                }
-
-                return $questions;
             } else {
                 $this->error(get_string('cannotunzip', 'question'));
                 fulldelete($this->temp_dir);
@@ -185,6 +122,86 @@ class qformat_h5p extends qformat_default {
         return false;
     }
 
+    /**
+     * Parse the a content object
+     *
+     * @param string $library The main library for content.
+     * @param object $content The content object.
+     * @return array (of objects) question objects.
+     */
+    public function read_content($library, $content, $title) {
+
+        $questions = array();
+
+        switch ($library) {
+            case 'H5P.InteractiveBook':
+                $content->content = array_reduce(
+                    $content->chapters,
+                    function($carry, $content) {
+                        return array_merge($carry, $content->params->content);
+                    },
+                    array()
+                );
+                return array_column($content->content, 'content');
+            case 'H5P.BranchingScenario':
+                $questions = array();
+                foreach ($content->branchingScenario->content as $subcontent) {
+                    $questions += $this->read_content(preg_replace('/ .*/', '', $subcontent->type->library), $subcontent->type->params, $title);
+                }
+                return $questions;
+            case 'H5P.Column':
+                return array_column($content->content, 'content');
+            case 'H5P.CoursePresentation':
+                $actions = array();
+
+                foreach ($content->presentation->slides as $slide) {
+                    foreach (array_column($slide->elements, 'action') as $action) {
+                        $actions = array_merge($actions, $this->read_subcontent($action));
+                    }
+                }
+                return $actions;
+            case 'H5P.Flashcards':
+                $content->dialogs = $content->cards;
+            case 'H5P.Dialogcards':
+                $dialogs = array();
+                foreach ($content->dialogs as $dialog) {
+                    $dialogs[] = (object) array(
+                        'params' => (object) array(
+                            'question' => $dialog->text,
+                            'answer' => $dialog->answer,
+                            'audio' => $dialog->audio,
+                            'media' => (object) array(
+                                'type' => (object) array(
+                                    'params' => (object) array(
+                                        'file' => $dialog->image,
+                                        'contentName' => 'Image',
+                                    ),
+                                ),
+                            ),
+                        ),
+                        'library' => 'Dialogcards',
+                        'metadata' => (object) array(
+                            'title' => $dialog->text,
+                        ),
+                    );
+                }
+                return $dialogs;
+            case 'H5P.InteractiveVideo':
+                return array_column($content->interactiveVideo->assets->interactions, 'action');
+            case 'H5P.QuestionSet':
+                return $content->questions;
+            case 'H5P.SingleChoiceSet':
+                return $this->read_choices($content);
+            default:
+                $question = new stdClass();
+                $question->params = $content;
+                $question->metadata = (object) array(
+                    'title' => $title,
+                );
+                $question->library = $library;
+                return array($question);
+        }
+    }
     /**
      * Parse the array of objects into an array of questions.
      *

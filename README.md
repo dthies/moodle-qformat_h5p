@@ -23,12 +23,6 @@ from the Quiz.
 
 Currently supports import of following H5P content types
 
-* Branching Scenario - extracts supported subcontent
-* Column - extracts supported subcontent
-* Course Presentaion - extracts supported subcontent
-* Interactive Book - extracts supported subcontent
-* Interactive Video - extracts supported subcontent
-* Quiz (Question Set) - extracts supported subcontent
 * Single Choice Set - extracts into individual multichoice questions
 * Dialog/Flash Cards - creates a short answer question from each card
 * Guess The Answer- creates a short answer question from the card
@@ -42,6 +36,11 @@ with embedded short answer
 question with embedded short answer or mulitchoice subquestions
 * Drag the Text Question - creates a Drag and drop into text question
 * Mark The Words - Creates Word select if that question type is installed
+* Image Sequencing - Creates an ordering question if that question type is
+installed
+
+and any of above which are included in Branching Scenario, Column, Course
+Presentaion, Interactive Book, Interactive Video, or Quiz (Question Set).
 
 ## License ##
 

@@ -95,8 +95,7 @@ class qformat_h5p extends qformat_default {
      * @return mixed contents array or false on failure
      */
     public function readdata($filename) {
-        $uniquecode = time();
-        $this->tempdir = make_temp_directory('h5p_import/' . $uniquecode);
+        $this->tempdir = make_request_directory();
         if (is_readable($filename)) {
             if (!copy($filename, $this->tempdir . '/content.zip')) {
                 $this->error(get_string('cannotcopybackup', 'question'));
@@ -297,6 +296,8 @@ class qformat_h5p extends qformat_default {
                 return new local\type_card($content, $this->tempdir);
             case 'H5P.GuessTheAnswer':
                 return new local\type_guess($content, $this->tempdir);
+            case 'H5P.ImageSequencing':
+                return new local\type_imagesequence($content, $this->tempdir);
             case 'H5P.MultiChoice':
                 return new local\type_mc($content, $this->tempdir);
             case 'H5P.TrueFalse':

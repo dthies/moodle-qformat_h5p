@@ -49,7 +49,7 @@ class type_dnd extends type_mc {
      * @return object question data
      */
     public function import_question() {
-        global $CFG, $USER;
+        global $CFG;
 
         // Get prescribed dimensions of background.
         $this->height = $this->params->question->settings->size->height / 100;

@@ -51,7 +51,8 @@ class type_dtw extends type_mc {
         preg_match_all('/\\*([^\\*]+)\\*/', $this->params->textField, $answers);
 
         $this->params->question = $this->params->textField;
-        for ($i = 1; $i <= count($answers[1]); $i++) {
+        $answercount = count($answers[1]);
+        for ($i = 1; $i <= $answercount; $i++) {
             $this->params->question = preg_replace( '/\\*([^\\*]+)\\*/', "[[$i]]", $this->params->question, 1);
         }
 

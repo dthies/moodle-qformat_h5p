@@ -88,9 +88,6 @@ class type_fib extends type_mc {
      */
     public function prepare_context() {
         $questions = preg_replace('/\\*([^\\*]+)\\*/', '{1:SHORTANSWER:~%100%$1}', $this->params->questions);
-        $questiontext = array(
-            'format' => FORMAT_HTML,
-        );
 
         // Import media file.
         $context = new stdClass();

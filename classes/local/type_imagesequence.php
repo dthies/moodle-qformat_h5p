@@ -109,12 +109,5 @@ class type_imagesequence extends type_mc {
 
         $file = $fs->create_file_from_pathname($filerecord, $filepath);
         return $itemid;
-
-        // Resize the image to desired size.
-        $itemid = file_get_unused_draft_itemid();
-        $filerecord['itemid'] = $itemid;
-        $fs->create_file_from_string($filerecord, $file->resize_image($width, $height));
-
-        return $itemid;
     }
 }

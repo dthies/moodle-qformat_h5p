@@ -77,10 +77,6 @@ class type_afib extends type_fib {
             $question = preg_replace('/____*/', $subquestion, $question, 1);
         }
 
-        $questiontext = array(
-            'format' => FORMAT_HTML,
-        );
-
         // Import media file.
         $context = new stdClass();
         $context->questiontext = '<div>' . $this->params->content->task .'</div><div>' . $question . '</div>';

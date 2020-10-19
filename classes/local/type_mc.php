@@ -146,7 +146,7 @@ class type_mc extends \qformat_default {
         $filename = preg_replace('/.*\\//', '', $media->type->params->file->path);
         $filepath = $this->tempdir . '/content/' . $media->type->params->file->path;
         $filerecord = array(
-            'author'    => $this->get_author($this->type->metadata),
+            'author'    => $this->get_author($media->type->metadata),
             'contextid' => context_user::instance($USER->id)->id,
             'component' => 'user',
             'filearea'  => 'draft',
@@ -275,7 +275,7 @@ class type_mc extends \qformat_default {
 
         if (!empty($metadata->authors)) {
             return implode(', ', array_column(
-                $source->metadata->authors,
+                $metadata->authors,
                 'name'
             ));
         } else if (!empty($metadata->author)) {

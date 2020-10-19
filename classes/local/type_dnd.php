@@ -123,13 +123,14 @@ class type_dnd extends type_mc {
     protected function import_question_files_as_draft($question) {
         global $USER;
 
-        $metadata = new stdClass();
         if (!empty($question->settings->background)) {
             $filepath = $this->tempdir . '/content/' . $question->settings->background->path;
             $height = $question->settings->size->height;
             $width = $question->settings->size->width;
             if (!empty($question->settings->metadata)) {
                 $metadata = $question->settings->metadata;
+            } else if (!empty($question->settings->copyright)) {
+                $metadata = $question->settings->copyright;
             }
         } else if (!empty($question->type->params->file)) {
             $filepath = $this->tempdir . '/content/' . $question->type->params->file->path;
@@ -137,6 +138,8 @@ class type_dnd extends type_mc {
             $width = $question->width * 20;
             if (!empty($question->type->metadata)) {
                 $metadata = $question->type->metadata;
+            } else if (!empty($question->type->copyright)) {
+                $metadata = $question->type->copyright;
             }
         } else {
             return '';
@@ -145,10 +148,7 @@ class type_dnd extends type_mc {
         $fs = get_file_storage();
         $itemid = file_get_unused_draft_itemid();
         $filerecord = array(
-            'author'    => implode(', ', array_column(
-                $metadata->authors,
-                'name'
-            )),
+            'author'    => $this->get_author($metadata),
             'contextid' => context_user::instance($USER->id)->id,
             'component' => 'user',
             'filearea'  => 'draft',

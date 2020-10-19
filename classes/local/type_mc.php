@@ -112,10 +112,7 @@ class type_mc extends \qformat_default {
             $filename = preg_replace('/.*\\//', '', $source->path);
             $filepath = $this->tempdir . '/content/' . $source->path;
             $filerecord = array(
-                'author'    => implode(', ', array_column(
-                    $source->metadata->authors,
-                    'name'
-                )),
+                'author'    => %this->get_author($source->metadata),
                 'contextid' => context_user::instance($USER->id)->id,
                 'component' => 'user',
                 'filearea'  => 'draft',
@@ -149,10 +146,7 @@ class type_mc extends \qformat_default {
         $filename = preg_replace('/.*\\//', '', $media->type->params->file->path);
         $filepath = $this->tempdir . '/content/' . $media->type->params->file->path;
         $filerecord = array(
-            'author'    => implode(', ', array_column(
-                $media->type->metadata->authors,
-                'name'
-            )),
+            'author'    => get_author($this->type->metadata),
             'contextid' => context_user::instance($USER->id)->id,
             'component' => 'user',
             'filearea'  => 'draft',
@@ -264,5 +258,28 @@ class type_mc extends \qformat_default {
             return license_manager::get_license_by_shortname($shortnames[$metadata->license]);
         }
         return license_manager::get_license_by_shortname('unknown');
+    }
+
+    /*
+     * Return standard author information
+     *
+     * @param {object) The metadata for content
+     *
+     * @return (object|null} The license record if found
+     *
+     */
+    public function get_author($metadata) {
+        if (empty($metadata)) {
+            return;
+        }
+
+        if (!empty($metadata->authors)) {
+            return implode(', ', array_column(
+                $source->metadata->authors,
+                'name'
+            );
+        } else if (!empty($metadata->author)) {
+            return $metadata->author;
+        }
     }
 }

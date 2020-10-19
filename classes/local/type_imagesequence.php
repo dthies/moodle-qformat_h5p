@@ -99,7 +99,7 @@ class type_imagesequence extends type_mc {
         $fs = get_file_storage();
         $itemid = file_get_unused_draft_itemid();
         $filerecord = array(
-            'author'    => $image->copyright->author,
+            'author'    => $this->get_author($image->copyright),
             'contextid' => context_user::instance($USER->id)->id,
             'component' => 'user',
             'filearea'  => 'draft',

@@ -275,7 +275,7 @@ class type_mc extends \qformat_default {
 
         if (!empty($metadata->authors)) {
             return implode(', ', array_column(
-                $source->metadata->authors,
+                $metadata->authors,
                 'name'
             ));
         } else if (!empty($metadata->author)) {

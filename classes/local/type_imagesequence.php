@@ -99,6 +99,7 @@ class type_imagesequence extends type_mc {
         $fs = get_file_storage();
         $itemid = file_get_unused_draft_itemid();
         $filerecord = array(
+            'author'    => $image->copyright->author,
             'contextid' => context_user::instance($USER->id)->id,
             'component' => 'user',
             'filearea'  => 'draft',
@@ -106,6 +107,9 @@ class type_imagesequence extends type_mc {
             'filepath'  => '/images/',
             'filename'  => preg_replace('/.*\\//', '', $filepath),
         );
+        if ($license = $this->get_license($image->copyright)) {
+            $filerecord['license'] = $license->id;
+        }
 
         $file = $fs->create_file_from_pathname($filerecord, $filepath);
         return $itemid;

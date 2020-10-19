@@ -127,10 +127,12 @@ class type_dnd extends type_mc {
             $filepath = $this->tempdir . '/content/' . $question->settings->background->path;
             $height = $question->settings->size->height;
             $width = $question->settings->size->width;
+            $metadata = $question->settings->metadata;
         } else if (!empty($question->type->params->file)) {
             $filepath = $this->tempdir . '/content/' . $question->type->params->file->path;
             $height = $question->height * 20;
             $width = $question->width * 20;
+            $metadata = $question->type->metadata;
         } else {
             return '';
         }
@@ -138,6 +140,10 @@ class type_dnd extends type_mc {
         $fs = get_file_storage();
         $itemid = file_get_unused_draft_itemid();
         $filerecord = array(
+            'author'    => implode(', ', array_column(
+                $metadata->authors,
+                'name'
+            )),
             'contextid' => context_user::instance($USER->id)->id,
             'component' => 'user',
             'filearea'  => 'draft',
@@ -145,6 +151,9 @@ class type_dnd extends type_mc {
             'filepath'  => '/',
             'filename'  => preg_replace('/.*\\//', '', $filepath),
         );
+        if ($license = $this->get_license($metadata)) {
+            $filerecord['license'] = $license->id;
+        }
 
         $file = $fs->create_file_from_pathname($filerecord, $filepath);
 

@@ -25,10 +25,12 @@
 
 namespace qformat_h5p\local;
 
+defined('MOODLE_INTERNAL') || die();
+
+require($CFG->libdir . '/licenselib.php');
 use stdClass;
 use context_user;
-
-defined('MOODLE_INTERNAL') || die();
+use license_manager;
 
 /**
  * Question Import for H5P Quiz content type
@@ -110,6 +112,10 @@ class type_mc extends \qformat_default {
             $filename = preg_replace('/.*\\//', '', $source->path);
             $filepath = $this->tempdir . '/content/' . $source->path;
             $filerecord = array(
+                'author'    => implode(', ', array_column(
+                    $source->metadata->authors,
+                    'name'
+                )),
                 'contextid' => context_user::instance($USER->id)->id,
                 'component' => 'user',
                 'filearea'  => 'draft',
@@ -117,6 +123,9 @@ class type_mc extends \qformat_default {
                 'filepath'  => preg_replace('/[^\\/]*$/', '', '/' . $source->path),
                 'filename'  => $filename,
             );
+            if ($license = $this->get_license($source->metadata)) {
+                $filerecord['license'] = $license->id;
+            }
             $fs->create_file_from_pathname($filerecord, $filepath);
         }
 
@@ -140,6 +149,10 @@ class type_mc extends \qformat_default {
         $filename = preg_replace('/.*\\//', '', $media->type->params->file->path);
         $filepath = $this->tempdir . '/content/' . $media->type->params->file->path;
         $filerecord = array(
+            'author'    => implode(', ', array_column(
+                $media->type->metadata->authors,
+                'name'
+            )),
             'contextid' => context_user::instance($USER->id)->id,
             'component' => 'user',
             'filearea'  => 'draft',
@@ -147,6 +160,9 @@ class type_mc extends \qformat_default {
             'filepath'  => '/images/',
             'filename'  => $filename,
         );
+        if ($license = $this->get_license($media->type->metadata)) {
+            $filerecord['license'] = $license->id;
+        }
         $fs->create_file_from_pathname($filerecord, $filepath);
 
         return $itemid;
@@ -219,5 +235,31 @@ class type_mc extends \qformat_default {
             }
         }
         return $qo;
+    }
+
+    /*
+     * Return standard Moodle license from H5P metadata
+     *
+     * @param {object) The metadata for content
+     *
+     * @return (object|null} The license record if found
+     *
+     */
+    public function get_license($metadata) {
+        $shortnames = array(
+            'C' => 'allrightsreserved',
+            'CC BY' => 'cc',
+            'CC BY-NC' => 'cc-nc',
+            'CC BY-NC-ND' => 'cc-nc-nd',
+            'CC BY-NC-SA' => 'cc-nc-sa',
+            'CC BY-ND' => 'cc-nd',
+            'CC BY-SA' => 'cc-sa',
+            'PD' => 'public',
+            'U' => 'unknown',
+        );
+        if (key_exists($metadata->license, $shortnames)) {
+            return license_manager::get_license_by_shortname($shortnames[$metadata->license]);
+        }
+        return license_manager::get_license_by_shortname('unknown');
     }
 }

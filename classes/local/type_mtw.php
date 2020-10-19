@@ -50,7 +50,7 @@ class type_mtw extends type_mc {
         }
         $this->params->question = $this->params->textField;
         $qo = $this->import_headers();
-        $qo->questiontext = str_replace('*', '@', $qo->questiontext);
+        $qo->questiontext = preg_replace('/ *\\*(.*?)\\*/', ' @$1@', $qo->questiontext);
         $qo->delimitchars = '@@';
         $qo->wordpenalty = 1;
         $qo->introduction = $this->params->taskDescription;

@@ -137,7 +137,6 @@ class type_dnd extends type_mc {
             if (!empty($question->type->metadata)) {
                 $metadata = $question->type->metadata;
             }
-        } else if (!empty($question->type->params->file)) {
         } else {
             return '';
         }

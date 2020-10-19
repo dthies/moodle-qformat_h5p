@@ -123,6 +123,7 @@ class type_dnd extends type_mc {
     protected function import_question_files_as_draft($question) {
         global $USER;
 
+        $metadata = null;
         if (!empty($question->settings->background)) {
             $filepath = $this->tempdir . '/content/' . $question->settings->background->path;
             $height = $question->settings->size->height;

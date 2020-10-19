@@ -246,6 +246,9 @@ class type_mc extends \qformat_default {
      *
      */
     public function get_license($metadata) {
+        if (empty($metadata) || empty($metadata->license)) {
+            return;
+        }
         $shortnames = array(
             'C' => 'allrightsreserved',
             'CC BY' => 'cc',

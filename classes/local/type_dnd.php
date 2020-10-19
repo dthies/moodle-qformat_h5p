@@ -127,12 +127,17 @@ class type_dnd extends type_mc {
             $filepath = $this->tempdir . '/content/' . $question->settings->background->path;
             $height = $question->settings->size->height;
             $width = $question->settings->size->width;
-            $metadata = $question->settings->metadata;
+            if (!empty($question->settings->metadata)) {
+                $metadata = $question->settings->metadata;
+            }
         } else if (!empty($question->type->params->file)) {
             $filepath = $this->tempdir . '/content/' . $question->type->params->file->path;
             $height = $question->height * 20;
             $width = $question->width * 20;
-            $metadata = $question->type->metadata;
+            if (!empty($question->type->metadata)) {
+                $metadata = $question->type->metadata;
+            }
+        } else if (!empty($question->type->params->file)) {
         } else {
             return '';
         }

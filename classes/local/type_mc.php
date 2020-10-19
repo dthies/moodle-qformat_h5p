@@ -112,7 +112,7 @@ class type_mc extends \qformat_default {
             $filename = preg_replace('/.*\\//', '', $source->path);
             $filepath = $this->tempdir . '/content/' . $source->path;
             $filerecord = array(
-                'author'    => %this->get_author($source->metadata),
+                'author'    => $this->get_author($source->metadata),
                 'contextid' => context_user::instance($USER->id)->id,
                 'component' => 'user',
                 'filearea'  => 'draft',

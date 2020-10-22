@@ -95,11 +95,16 @@ class type_imagesequence extends type_mc {
             return '';
         }
         $filepath = $this->tempdir . '/content/' . $image->path;
+        if (empty($image->copyright)) {
+            $metadata = $image->metadata;
+        } else {
+            $metadata = $image->copyright;
+        }
 
         $fs = get_file_storage();
         $itemid = file_get_unused_draft_itemid();
         $filerecord = array(
-            'author'    => $this->get_author($image->copyright),
+            'author'    => $this->get_author($metadata),
             'contextid' => context_user::instance($USER->id)->id,
             'component' => 'user',
             'filearea'  => 'draft',
@@ -107,7 +112,7 @@ class type_imagesequence extends type_mc {
             'filepath'  => '/images/',
             'filename'  => preg_replace('/.*\\//', '', $filepath),
         );
-        if ($license = $this->get_license($image->copyright)) {
+        if ($license = $this->get_license($metadata)) {
             $filerecord['license'] = $license->id;
         }
 

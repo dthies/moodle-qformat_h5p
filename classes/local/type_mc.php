@@ -234,9 +234,9 @@ class type_mc extends \qformat_default {
     /*
      * Return standard Moodle license from H5P metadata
      *
-     * @param {object) The metadata for content
+     * @param object The metadata for content
      *
-     * @return (object|null} The license record if found
+     * @return object|null The license record if found
      *
      */
     public function get_license($metadata) {
@@ -263,9 +263,9 @@ class type_mc extends \qformat_default {
     /*
      * Return standard author information
      *
-     * @param {object) The metadata for content
+     * @param object The metadata for content
      *
-     * @return (object|null} The license record if found
+     * @return string|null The author info if found
      *
      */
     public function get_author($metadata) {

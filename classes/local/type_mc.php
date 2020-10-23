@@ -231,13 +231,11 @@ class type_mc extends \qformat_default {
         return $qo;
     }
 
-    /*
+    /**
      * Return standard Moodle license from H5P metadata
      *
-     * @param object The metadata for content
-     *
+     * @param object $metadata The metadata for content
      * @return object|null The license record if found
-     *
      */
     public function get_license($metadata) {
         if (empty($metadata) || empty($metadata->license)) {
@@ -260,13 +258,11 @@ class type_mc extends \qformat_default {
         return license_manager::get_license_by_shortname('unknown');
     }
 
-    /*
+    /**
      * Return standard author information
      *
-     * @param object The metadata for content
-     *
+     * @param object $metadata The metadata for content
      * @return string|null The author info if found
-     *
      */
     public function get_author($metadata) {
         if (empty($metadata)) {

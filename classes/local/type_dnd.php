@@ -156,10 +156,8 @@ class type_dnd extends type_mc {
             'itemid'    => $itemid,
             'filepath'  => '/',
             'filename'  => preg_replace('/.*\\//', '', $filepath),
+            'license'  => $this->get_license($metadata),
         );
-        if ($license = $this->get_license($metadata)) {
-            $filerecord['license'] = $license->id;
-        }
 
         $file = $fs->create_file_from_pathname($filerecord, $filepath);
 

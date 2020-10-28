@@ -119,10 +119,8 @@ class type_mc extends \qformat_default {
                 'itemid'    => $this->itemid,
                 'filepath'  => preg_replace('/[^\\/]*$/', '', '/' . $source->path),
                 'filename'  => $filename,
+                'license'  => $this->get_license($media->type->metadata),
             );
-            if ($license = $this->get_license($source->metadata)) {
-                $filerecord['license'] = $license->id;
-            }
             $fs->create_file_from_pathname($filerecord, $filepath);
         }
 
@@ -153,10 +151,8 @@ class type_mc extends \qformat_default {
             'itemid'    => $itemid,
             'filepath'  => '/images/',
             'filename'  => $filename,
+            'license'  => $this->get_license($media->type->metadata),
         );
-        if ($license = $this->get_license($media->type->metadata)) {
-            $filerecord['license'] = $license->id;
-        }
         $fs->create_file_from_pathname($filerecord, $filepath);
 
         return $itemid;
@@ -238,6 +234,8 @@ class type_mc extends \qformat_default {
      * @return object|null The license record if found
      */
     public function get_license($metadata) {
+        global $CFG;
+
         if (empty($metadata) || empty($metadata->license)) {
             return;
         }
@@ -252,10 +250,15 @@ class type_mc extends \qformat_default {
             'PD' => 'public',
             'U' => 'unknown',
         );
-        if (key_exists($metadata->license, $shortnames)) {
-            return license_manager::get_license_by_shortname($shortnames[$metadata->license]);
+        if (key_exists($metadata->license, $shortnames) &&
+            in_array(
+                $shortnames[$metadata->license],
+                array_column(license_manager::get_active_licenses(), 'shortname')
+            )
+        ) {
+            return $shortnames[$metadata->license];
         }
-        return license_manager::get_license_by_shortname('unknown');
+        return $CFG->sitedefaultlicense;
     }
 
     /**

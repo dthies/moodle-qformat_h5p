@@ -252,7 +252,7 @@ class type_mc extends \qformat_default {
         );
         if (key_exists($metadata->license, $shortnames) &&
             (
-                !defined(license_manager::LICENSE_ENABLED) ||
+                !defined('license_manager::LICENSE_ENABLED') ||
                 in_array(
                     $shortnames[$metadata->license],
                     array_column(license_manager::get_active_licenses(), 'shortname')

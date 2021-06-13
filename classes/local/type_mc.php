@@ -191,7 +191,7 @@ class type_mc extends \qformat_default {
 
         // Import with media file.
         if (!empty($context->media)) {
-            if (!$this->itemid = $this->import_media_as_draft($context->media)) {
+            if ((!$this->itemid = $this->import_media_as_draft($context->media)) && !empty($context->media->type)) {
                 $this->itemid = $this->import_sources_as_draft($context->media->type->params->sources);
                 $context->hasvideo = !empty($context->media->type->params->sources);
             }
@@ -204,7 +204,7 @@ class type_mc extends \qformat_default {
         }
         $qo->questiontext = $OUTPUT->render_from_template($this->template, $context);
 
-        foreach ($this->params->overallFeedback as $feedback) {
+        foreach ($this->params->overallFeedback ?? array() as $feedback) {
             if (($feedback->from === 0) && ($feedback->to < 100)) {
                 $qo->incorrectfeedback = array(
                     'text' => $feedback->feedback,

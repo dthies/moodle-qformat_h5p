@@ -296,6 +296,9 @@ class qformat_h5p extends qformat_default {
                 return new local\type_card($content, $this->tempdir);
             case 'H5P.GuessTheAnswer':
                 return new local\type_guess($content, $this->tempdir);
+            case 'H5P.ImageMultipleHotspotQuestion':
+            case 'H5P.ImageHotspotQuestion':
+                return new local\type_hotspot($content, $this->tempdir);
             case 'H5P.ImageSequencing':
                 return new local\type_imagesequence($content, $this->tempdir);
             case 'H5P.MultiChoice':

@@ -37,14 +37,17 @@ question with embedded short answer or mulitchoice subquestions
 * Drag the Text Question - creates a Drag and drop into text question
 * Mark The Words - Creates Word select if that question type is installed
 * Image Sequencing - Creates an ordering question if that question type is
-installed
+* Find the Hotspot/Multiple Hotspots- Creates a Drag and drop markers question 
 
 and any of above which are included in Branching Scenario, Column, Course
 Presentaion, Interactive Book, Interactive Video, or Quiz (Question Set).
 
+If you want to convert questions into H5P use the _Repurpose resources_ content
+type plugin https://moodle.org/plugins/contenttype_repurpose.
+
 ## License ##
 
-2020 Daniel Thies <dethies@gmail.com>
+2020 onward Daniel Thies <dethies@gmail.com>
 
 This program is free software: you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the

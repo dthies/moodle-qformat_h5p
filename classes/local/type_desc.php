@@ -30,8 +30,6 @@ use qformat_h5p\local;
 use stdClass;
 use context_user;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Question Import for H5P Quiz content type
  *

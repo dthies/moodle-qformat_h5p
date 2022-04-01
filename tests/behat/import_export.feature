@@ -8,9 +8,6 @@ Feature: Test importing questions from H5P content type.
     Given the following "courses" exist:
       | fullname | shortname | format |
       | Course 1 | C1        | topics |
-    And the following "activities" exist:
-      | activity | name   | course |
-      | quiz     | Quiz 1 | C1     |
     And the following "users" exist:
       | username | firstname |
       | teacher  | Teacher   |
@@ -18,12 +15,11 @@ Feature: Test importing questions from H5P content type.
       | user    | course | role           |
       | teacher | C1     | editingteacher |
     And I log in as "teacher"
+    And I am on "Course 1" course homepage
 
   @javascript @_file_upload
   Scenario: import .h5p file of Question Set content
-    When I am on the "Quiz 1" "quiz activity editing" page
-    And I press "Save and display"
-    And I navigate to "Question bank > Import" in current page administration
+    When I am on the "Course 1" "core_question > course question import" page logged in as teacher
     And I set the field "id_format_h5p" to "1"
     And I upload "question/format/h5p/tests/fixtures/question-set-616.h5p" file to "Import" filemanager
     And I press "id_submitbutton"

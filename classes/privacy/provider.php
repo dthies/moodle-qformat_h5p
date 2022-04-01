@@ -24,8 +24,6 @@
 
 namespace qformat_h5p\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Privacy Subsystem for qformat_h5p implementing null_provider.
  *

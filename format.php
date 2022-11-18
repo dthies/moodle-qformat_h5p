@@ -170,7 +170,7 @@ class qformat_h5p extends qformat_default {
                         'params' => (object) array(
                             'question' => $dialog->text,
                             'answer' => $dialog->answer,
-                            'audio' => $dialog->audio,
+                            'audio' => $dialog->audio ?? null,
                             'media' => (object) array(
                                 'type' => (object) array(
                                     'params' => (object) array(

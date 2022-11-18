@@ -112,15 +112,24 @@ class type_mc extends \qformat_default {
             $filename = preg_replace('/.*\\//', '', $source->path);
             $filepath = $this->tempdir . '/content/' . $source->path;
             $filerecord = array(
-                'author'    => $this->get_author($source->metadata),
                 'contextid' => context_user::instance($USER->id)->id,
                 'component' => 'user',
                 'filearea'  => 'draft',
                 'itemid'    => $this->itemid,
                 'filepath'  => preg_replace('/[^\\/]*$/', '', '/' . $source->path),
                 'filename'  => $filename,
-                'license'  => $this->get_license($media->type->metadata),
             );
+            if (!empty($source->metadata)) {
+                $filerecord = $filerecord + [
+                    'author'    => $this->get_author($source->metadata),
+                    'license'  => $this->get_license($source->metadata),
+                ];
+            } else {
+                $filerecord = $filerecord + [
+                    'author'    => $this->get_author($source->copyright),
+                    'license'  => $this->get_license($source->copyright),
+                ];
+            }
             $fs->create_file_from_pathname($filerecord, $filepath);
         }
 
@@ -144,15 +153,24 @@ class type_mc extends \qformat_default {
         $filename = preg_replace('/.*\\//', '', $media->type->params->file->path);
         $filepath = $this->tempdir . '/content/' . $media->type->params->file->path;
         $filerecord = array(
-            'author'    => $this->get_author($media->type->metadata),
             'contextid' => context_user::instance($USER->id)->id,
             'component' => 'user',
             'filearea'  => 'draft',
             'itemid'    => $itemid,
             'filepath'  => '/images/',
             'filename'  => $filename,
-            'license'  => $this->get_license($media->type->metadata),
         );
+        if (!empty($media->type->metadata)) {
+            $filerecord = $filerecord + [
+                'author'    => $this->get_author($media->type->metadata),
+                'license'  => $this->get_license($media->type->metadata),
+            ];
+        } else {
+            $filerecord = $filerecord + [
+                'author'    => $this->get_author($media->type->params->file->copyright),
+                'license'  => $this->get_license($media->type->params->file->copyright),
+            ];
+        }
         $fs->create_file_from_pathname($filerecord, $filepath);
 
         return $itemid;

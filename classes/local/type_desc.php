@@ -26,7 +26,6 @@
 namespace qformat_h5p\local;
 
 use qformat_h5p\local;
-
 use stdClass;
 use context_user;
 
@@ -37,7 +36,6 @@ use context_user;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class type_desc extends type_mc {
-
     /**
      * Converts the content object to question object
      *
@@ -59,5 +57,4 @@ class type_desc extends type_mc {
 
         return $qo;
     }
-
 }

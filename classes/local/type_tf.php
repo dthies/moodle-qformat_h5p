@@ -35,7 +35,6 @@ use context_user;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class type_tf extends type_mc {
-
     /**
      * Converts the content object to question object
      *
@@ -46,14 +45,14 @@ class type_tf extends type_mc {
         $qo->qtype = 'truefalse';
         $qo->answer = ($this->params->correct == "true");
         $qo->correctanswer = $qo->answer;
-        $qo->feedbacktrue = array(
+        $qo->feedbacktrue = [
             'text' => $qo->answer ? $this->params->behaviour->feedbackOnCorrect : $this->params->behaviour->feedbackOnWrong,
-            'format' => FORMAT_HTML
-        );
-        $qo->feedbackfalse = array(
+            'format' => FORMAT_HTML,
+        ];
+        $qo->feedbackfalse = [
             'text' => $qo->answer ? $this->params->behaviour->feedbackOnWrong : $this->params->behaviour->feedbackOnCorrect,
-            'format' => FORMAT_HTML
-        );
+            'format' => FORMAT_HTML,
+        ];
 
         return $qo;
     }

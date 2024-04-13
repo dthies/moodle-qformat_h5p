@@ -35,7 +35,6 @@ use context_user;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class type_mtw extends type_mc {
-
     /**
      * Converts the content object to question object
      *

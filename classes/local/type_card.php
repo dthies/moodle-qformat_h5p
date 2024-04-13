@@ -35,7 +35,6 @@ use context_user;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class type_card extends type_mc {
-
     /**
      * Converts the content object to question object
      *
@@ -45,10 +44,10 @@ class type_card extends type_mc {
         $qo = $this->import_headers();
         $qo->qtype = 'shortanswer';
         $qo->answer[0] = strip_tags($this->params->answer);
-        $qo->feedback[0] = array(
+        $qo->feedback[0] = [
             'text' => '',
             'format' => FORMAT_HTML,
-        );
+        ];
         $qo->fraction[0] = 1;
 
         return $qo;

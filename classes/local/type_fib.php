@@ -26,7 +26,6 @@
 namespace qformat_h5p\local;
 
 use qformat_h5p\local;
-
 use stdClass;
 use context_user;
 use question_bank;
@@ -38,7 +37,6 @@ use question_bank;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class type_fib extends type_mc {
-
     /**
      * Converts the content object to question object
      *

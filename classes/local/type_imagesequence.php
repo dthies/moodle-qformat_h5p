@@ -35,7 +35,6 @@ use context_user;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class type_imagesequence extends type_mc {
-
     /**
      * Converts the content object to question object
      *
@@ -59,22 +58,22 @@ class type_imagesequence extends type_mc {
         $qo->showgrading = 1;
         $qo->numberingstyle = 'none';
 
-        $qo->answer = array();
-        $qo->feedback = array();
+        $qo->answer = [];
+        $qo->feedback = [];
 
         $images = array_column($this->params->sequenceImages, 'image');
         $height = 1.0 * min(array_column($images, 'height'));
 
         foreach ($this->params->sequenceImages as $image) {
-            $qo->answer[] = array(
-                'text' => $OUTPUT->render_from_template('qformat_h5p/imagesequence', array(
+            $qo->answer[] = [
+                'text' => $OUTPUT->render_from_template('qformat_h5p/imagesequence', [
                     'description' => $image->imageDescription,
                     'height' => $height,
                     'path' => $image->image->path,
-                )),
+                ]),
                 'format' => FORMAT_HTML,
                 'itemid' => $this->import_image_file_as_draft($image->image),
-            );
+            ];
         }
 
         return $qo;
@@ -101,7 +100,7 @@ class type_imagesequence extends type_mc {
 
         $fs = get_file_storage();
         $itemid = file_get_unused_draft_itemid();
-        $filerecord = array(
+        $filerecord = [
             'author'    => $this->get_author($metadata),
             'contextid' => context_user::instance($USER->id)->id,
             'component' => 'user',
@@ -110,7 +109,7 @@ class type_imagesequence extends type_mc {
             'filepath'  => '/images/',
             'filename'  => preg_replace('/.*\\//', '', $filepath),
             'license'  => $this->get_license($metadata),
-        );
+        ];
         $file = $fs->create_file_from_pathname($filerecord, $filepath);
         return $itemid;
     }

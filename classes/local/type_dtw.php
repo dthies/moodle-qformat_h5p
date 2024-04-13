@@ -26,7 +26,6 @@
 namespace qformat_h5p\local;
 
 use qformat_h5p\local;
-
 use stdClass;
 use context_user;
 use question_bank;
@@ -38,7 +37,6 @@ use question_bank;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class type_dtw extends type_mc {
-
     /**
      * Converts the content object to question object
      *
@@ -51,20 +49,20 @@ class type_dtw extends type_mc {
         $this->params->question = $this->params->textField;
         $answercount = count($answers[1]);
         for ($i = 1; $i <= $answercount; $i++) {
-            $this->params->question = preg_replace( '/\\*([^\\*]+)\\*/', "[[$i]]", $this->params->question, 1);
+            $this->params->question = preg_replace('/\\*([^\\*]+)\\*/', "[[$i]]", $this->params->question, 1);
         }
 
-        $this->params->question = '<div>'. $this->params->taskDescription . '</div>' .
+        $this->params->question = '<div>' . $this->params->taskDescription . '</div>' .
             preg_replace('/(.+)$/m', '<div>$1</div>', $this->params->question);
         $qo = $this->import_headers();
         $qo->qtype = 'ddwtos';
-        $qo->choices = array();
+        $qo->choices = [];
         foreach ($answers[1] as $answer) {
-            $qo->choices[] = array(
+            $qo->choices[] = [
                 'answer' => preg_replace('/(:|\\\\[\\-\\+]).*/', '', $answer),
                 'choicegroup' => 1,
                 'infinie' => false,
-            );
+            ];
         }
         if (!empty($this->itemid)) {
             $qo->questiontextitemid = $this->itemid;
@@ -72,5 +70,4 @@ class type_dtw extends type_mc {
 
         return $qo;
     }
-
 }

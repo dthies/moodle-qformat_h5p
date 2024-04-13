@@ -39,14 +39,22 @@ use license_manager;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class type_mc extends \qformat_default {
-
     /** @var int $itemid questiontext itemid */
     protected $itemid = 0;
 
-    /** @var string $tempdir The temporary directory containing unzipped content type */
+    /** @var int $library Library name */
+    protected $library = '';
+
+    /** @var $metadata Metadata object */
+    protected $metadata = null;
+
+    /** @var $params Params for question */
+    protected $params = null;
+
+    /** @var $tempdir The temporary directory containing unzipped content type */
     protected $tempdir;
 
-    /** @var string $template The name of template used to format question */
+    /** @var $template The name of template used to format question */
     protected $template = 'qformat_h5p/questiontext';
 
     /**
@@ -56,8 +64,7 @@ class type_mc extends \qformat_default {
      * @param string $tempdir tempoorary directory location
      */
     public function __construct($content, $tempdir) {
-
-        $this->metadata = $content->metadata;
+        $this->metadata = $content->metadata ?? new stdClass();
 
         $this->library = $content->library;
 
@@ -77,16 +84,16 @@ class type_mc extends \qformat_default {
         $totalcorrect = array_sum(array_column($this->params->answers, 'correct'));
         $qo->single = ($totalcorrect == 1);
         // Run through the answers.
-        $qo->answer = array();
+        $qo->answer = [];
         $acount = 0;
         foreach ($this->params->answers as $answer) {
-            $qo->answer[$acount] = array('text' => html_to_text($answer->text), 'format' => FORMAT_HTML);
+            $qo->answer[$acount] = ['text' => html_to_text($answer->text ?? ''), 'format' => FORMAT_HTML];
             if ($qo->single) {
                 $qo->fraction[$acount] = !empty($answer->correct);
             } else {
                 $qo->fraction[$acount] = round((2.0 * !empty($answer->correct) - 1) / $totalcorrect, 7);
             }
-            $qo->feedback[$acount] = array('text' => $answer->tipsAndFeedback->chosenFeedback, 'format' => FORMAT_HTML);
+            $qo->feedback[$acount] = ['text' => $answer->tipsAndFeedback->chosenFeedback ?? '', 'format' => FORMAT_HTML];
             $acount++;
         }
         return $qo;
@@ -111,14 +118,14 @@ class type_mc extends \qformat_default {
         foreach ($media as $source) {
             $filename = preg_replace('/.*\\//', '', $source->path);
             $filepath = $this->tempdir . '/content/' . $source->path;
-            $filerecord = array(
+            $filerecord = [
                 'contextid' => context_user::instance($USER->id)->id,
                 'component' => 'user',
                 'filearea'  => 'draft',
                 'itemid'    => $this->itemid,
                 'filepath'  => preg_replace('/[^\\/]*$/', '', '/' . $source->path),
                 'filename'  => $filename,
-            );
+            ];
             if (!empty($source->metadata)) {
                 $filerecord = $filerecord + [
                     'author'    => $this->get_author($source->metadata),
@@ -152,14 +159,14 @@ class type_mc extends \qformat_default {
         $itemid = file_get_unused_draft_itemid();
         $filename = preg_replace('/.*\\//', '', $media->type->params->file->path);
         $filepath = $this->tempdir . '/content/' . $media->type->params->file->path;
-        $filerecord = array(
+        $filerecord = [
             'contextid' => context_user::instance($USER->id)->id,
             'component' => 'user',
             'filearea'  => 'draft',
             'itemid'    => $itemid,
             'filepath'  => '/images/',
             'filename'  => $filename,
-        );
+        ];
         if (!empty($media->type->metadata)) {
             $filerecord = $filerecord + [
                 'author'    => $this->get_author($media->type->metadata),
@@ -199,8 +206,10 @@ class type_mc extends \qformat_default {
             $context->audio = $this->params->audio;
             $context->hasaudio = true;
         }
-        if (!empty($this->params->question) &&
-            !is_object($this->params->question)) {
+        if (
+            !empty($this->params->question) &&
+            !is_object($this->params->question)
+        ) {
             $context->questiontext = strip_tags(
                 $this->params->question,
                 '<div><p><h1><h2><h3><h4><h5><h6><span><strong><b><i><em>'
@@ -222,24 +231,24 @@ class type_mc extends \qformat_default {
         }
         $qo->questiontext = $OUTPUT->render_from_template($this->template, $context);
 
-        foreach ($this->params->overallFeedback ?? array() as $feedback) {
+        foreach ($this->params->overallFeedback ?? [] as $feedback) {
             if (($feedback->from === 0) && ($feedback->to < 100)) {
-                $qo->incorrectfeedback = array(
+                $qo->incorrectfeedback = [
                     'text' => $feedback->feedback,
                     'format' => FORMAT_HTML,
-                );
+                ];
             }
             if (($feedback->from === 1) && ($feedback->to === 99)) {
-                $qo->partiallycorrectfeedback = array(
+                $qo->partiallycorrectfeedback = [
                     'text' => $feedback->feedback,
                     'format' => FORMAT_HTML,
-                );
+                ];
             }
             if (($feedback->from > 0) && ($feedback->to === 100)) {
-                $qo->correctfeedback = array(
+                $qo->correctfeedback = [
                     'text' => $feedback->feedback,
                     'format' => FORMAT_HTML,
-                );
+                ];
             }
         }
         return $qo;
@@ -257,7 +266,7 @@ class type_mc extends \qformat_default {
         if (empty($metadata) || empty($metadata->license)) {
             return;
         }
-        $shortnames = array(
+        $shortnames = [
             'C' => 'allrightsreserved',
             'CC BY' => 'cc',
             'CC BY-NC' => 'cc-nc',
@@ -267,8 +276,9 @@ class type_mc extends \qformat_default {
             'CC BY-SA' => 'cc-sa',
             'PD' => 'public',
             'U' => 'unknown',
-        );
-        if (key_exists($metadata->license, $shortnames) &&
+        ];
+        if (
+            key_exists($metadata->license, $shortnames) &&
             (
                 !defined('license_manager::LICENSE_ENABLED') ||
                 in_array(

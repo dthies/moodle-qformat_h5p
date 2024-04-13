@@ -31,6 +31,9 @@ use qformat_h5p\local;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qformat_h5p extends qformat_default {
+    /** @var $tempdir Tempory directory path */
+    protected $tempdir = '';
+
     /**
      * Imoport functionality
      *
@@ -106,7 +109,6 @@ class qformat_h5p extends qformat_default {
                 $content = json_decode($this->get_filecontent('content/content.json'));
 
                 return $this->read_content($h5p->mainLibrary, $content, $h5p->title);
-
             } else {
                 $this->error(get_string('cannotunzip', 'question'));
                 fulldelete($this->temp_dir);
@@ -128,20 +130,20 @@ class qformat_h5p extends qformat_default {
      */
     public function read_content($library, $content, $title) {
 
-        $questions = array();
+        $questions = [];
 
         switch ($library) {
             case 'H5P.InteractiveBook':
                 $content->content = array_reduce(
                     $content->chapters,
-                    function($carry, $content) {
+                    function ($carry, $content) {
                         return array_merge($carry, $content->params->content);
                     },
-                    array()
+                    []
                 );
                 return array_column($content->content, 'content');
             case 'H5P.BranchingScenario':
-                $questions = array();
+                $questions = [];
                 foreach ($content->branchingScenario->content as $subcontent) {
                     $questions += $this->read_content(
                         preg_replace('/ .*/', '', $subcontent->type->library),
@@ -153,7 +155,7 @@ class qformat_h5p extends qformat_default {
             case 'H5P.Column':
                 return array_column($content->content, 'content');
             case 'H5P.CoursePresentation':
-                $actions = array();
+                $actions = [];
 
                 foreach ($content->presentation->slides as $slide) {
                     foreach (array_column($slide->elements, 'action') as $action) {
@@ -163,28 +165,29 @@ class qformat_h5p extends qformat_default {
                 return $actions;
             case 'H5P.Flashcards':
                 $content->dialogs = $content->cards;
+                // Handle like dialog cards.
             case 'H5P.Dialogcards':
-                $dialogs = array();
+                $dialogs = [];
                 foreach ($content->dialogs as $dialog) {
-                    $dialogs[] = (object) array(
-                        'params' => (object) array(
+                    $dialogs[] = (object) [
+                        'params' => (object) [
                             'question' => $dialog->text,
                             'answer' => $dialog->answer,
                             'audio' => $dialog->audio ?? null,
-                            'media' => (object) array(
-                                'type' => (object) array(
-                                    'params' => (object) array(
+                            'media' => (object) [
+                                'type' => (object) [
+                                    'params' => (object) [
                                         'file' => $dialog->image,
                                         'contentName' => 'Image',
-                                    ),
-                                ),
-                            ),
-                        ),
+                                    ],
+                                ],
+                            ],
+                        ],
                         'library' => 'Dialogcards',
-                        'metadata' => (object) array(
+                        'metadata' => (object) [
                             'title' => $dialog->text,
-                        ),
-                    );
+                        ],
+                    ];
                 }
                 return $dialogs;
             case 'H5P.InteractiveVideo':
@@ -196,11 +199,11 @@ class qformat_h5p extends qformat_default {
             default:
                 $question = new stdClass();
                 $question->params = $content;
-                $question->metadata = (object) array(
+                $question->metadata = (object) [
                     'title' => $title,
-                );
+                ];
                 $question->library = $library;
-                return array($question);
+                return [$question];
         }
     }
     /**
@@ -212,11 +215,10 @@ class qformat_h5p extends qformat_default {
     public function readquestions($lines) {
 
         // Set up array to hold all our questions.
-        $questions = array();
+        $questions = [];
 
         // Each element of $lines is a h5p content type with data.
         foreach ($lines as $content) {
-
             if (($type = $this->create_content_type($content)) && $qo = $type->import_question()) {
                 $questions[] = $qo;
             }
@@ -237,7 +239,7 @@ class qformat_h5p extends qformat_default {
             case 'H5P.SingleChoiceSet':
                 return $this->read_choices($content->params);
             default:
-                return array($content);
+                return [$content];
         }
     }
 
@@ -248,28 +250,28 @@ class qformat_h5p extends qformat_default {
      * @return array multichoice content to be imported
      */
     public function read_choices($content) {
-        $questions = array();
+        $questions = [];
         foreach ($content->choices as $choice) {
-            $answers = array();
+            $answers = [];
             foreach ($choice->answers as $key => $answer) {
-                $answers[] = (object) array(
+                $answers[] = (object) [
                     'text' => $answer,
                     'correct' => empty($key),
-                    'tipsAndFeedback' => (object) array(
-                        'chosenFeedback' => empty($key) ? $content->l10n->correctText : $content->l10n->incorrectText,
-                    ),
-                );
+                    'tipsAndFeedback' => (object) [
+                        'chosenFeedback' => empty($key) ? ($content->l10n->correctText ?? '') : $content->l10n->incorrectText ?? '',
+                    ],
+                ];
             }
-            $questions[] = (object) array(
-                'params' => (object) array(
+            $questions[] = (object) [
+                'params' => (object) [
                     'question' => $choice->question,
                     'answers' => $answers,
-                ),
-                'metadata' => (object) array(
+                ],
+                'metadata' => (object) [
                     'title' => $choice->question,
-                ),
+                ],
                 'library' => 'H5P.MultiChoice',
-            );
+            ];
         };
         return $questions;
     }

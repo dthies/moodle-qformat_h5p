@@ -26,7 +26,6 @@
 namespace qformat_h5p\local;
 
 use qformat_h5p\local;
-
 use stdClass;
 use context_user;
 use question_bank;
@@ -38,7 +37,6 @@ use question_bank;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class type_afib extends type_fib {
-
     /**
      * Preprocess context
      *
@@ -77,7 +75,7 @@ class type_afib extends type_fib {
 
         // Import media file.
         $context = new stdClass();
-        $context->questiontext = '<div>' . $this->params->content->task .'</div><div>' . $question . '</div>';
+        $context->questiontext = '<div>' . $this->params->content->task . '</div><div>' . $question . '</div>';
         return $context;
     }
 }

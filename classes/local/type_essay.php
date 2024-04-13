@@ -35,7 +35,6 @@ use context_user;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class type_essay extends type_mc {
-
     /**
      * Converts the content object to question object
      *
@@ -55,16 +54,16 @@ class type_essay extends type_mc {
         $qo->attachments = 0;
         $qo->attachmentsrequired = 0;
         $qo->filetypeslist = '';
-        $qo->graderinfo = array(
-            'text' => $OUTPUT->render_from_template('qformat_h5p/graderinfo', array(
+        $qo->graderinfo = [
+            'text' => $OUTPUT->render_from_template('qformat_h5p/graderinfo', [
                 'keywords' => $this->params->keywords,
-            )),
+            ]),
             'format' => FORMAT_HTML,
-        );
-        $qo->responsetemplate = array(
+        ];
+        $qo->responsetemplate = [
             'text' => $this->params->placeholderText,
-            'format' => FORMAT_HTML
-        );
+            'format' => FORMAT_HTML,
+        ];
         $qo->generalfeedback = '';
         $qo->generalfeedbackformat = FORMAT_HTML;
         $qo->responsetemplateformat = FORMAT_HTML;

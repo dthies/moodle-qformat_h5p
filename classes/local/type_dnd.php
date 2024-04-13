@@ -60,9 +60,9 @@ class type_dnd extends type_mc {
             );
             imagecolorallocate($background, 255, 255, 255);
             imagepng($background, $this->tempdir . '/content/images/background.png');
-            $this->params->question->settings->background = (object) array(
+            $this->params->question->settings->background = (object) [
                 'path' => 'images/background.png',
-            );
+            ];
         }
 
         if (!$itemid = $this->import_question_files_as_draft($this->params->question)) {
@@ -74,21 +74,21 @@ class type_dnd extends type_mc {
         $qo->bgimage = $itemid;
         $qo->qtype = 'ddimageortext';
 
-        $qo->drags = array();
+        $qo->drags = [];
         foreach ($this->params->question->task->elements as $dragindex => $element) {
             $itemid = $this->import_question_files_as_draft($element);
             if (!empty($itemid)) {
-                $qo->drags[$dragindex] = array(
+                $qo->drags[$dragindex] = [
                     'dragitemtype' => 'image',
                     'draggroup' => 1,
                     'infinite' => false,
-                );
+                ];
             } else {
-                $qo->drags[$dragindex] = array(
+                $qo->drags[$dragindex] = [
                     'dragitemtype' => 'word',
                     'draggroup' => 1,
                     'infinite' => false,
-                );
+                ];
                 $qo->draglabel[$dragindex] = 'Drag me';
             }
             $qo->dragitem[$dragindex] = $itemid;
@@ -98,16 +98,16 @@ class type_dnd extends type_mc {
                 $qo->draglabel[$dragindex] = strip_tags($element->type->params->alt);
             }
         }
-        $qo->drops = array();
+        $qo->drops = [];
         foreach ($this->params->question->task->dropZones as $zone) {
-            $qo->drops[] = array(
+            $qo->drops[] = [
                 'choice' => reset($zone->correctElements) + 1,
                 'xleft' => round($zone->x * $this->width),
                 'ytop' => round($zone->y * $this->height),
                 'droplabel' => !empty($zone->showLabel) ? strip_tags($zone->label) : '',
-                'coords' => round($zone->x * $this->width) . ',' . round($zone->y * $this->height). ';' .
+                'coords' => round($zone->x * $this->width) . ',' . round($zone->y * $this->height) . ';' .
                     round($zone->width * $this->width) . ',' .  round($zone->height * $this->height),
-            );
+            ];
         }
         return $qo;
     }
@@ -146,7 +146,7 @@ class type_dnd extends type_mc {
 
         $fs = get_file_storage();
         $itemid = file_get_unused_draft_itemid();
-        $filerecord = array(
+        $filerecord = [
             'author'    => $this->get_author($metadata),
             'contextid' => context_user::instance($USER->id)->id,
             'component' => 'user',
@@ -155,7 +155,7 @@ class type_dnd extends type_mc {
             'filepath'  => '/',
             'filename'  => preg_replace('/.*\\//', '', $filepath),
             'license'  => $this->get_license($metadata),
-        );
+        ];
 
         $file = $fs->create_file_from_pathname($filerecord, $filepath);
 

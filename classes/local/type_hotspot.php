@@ -77,39 +77,39 @@ class type_hotspot extends type_mc {
         $qo->bgimage = $itemid;
         $qo->qtype = 'ddmarker';
 
-        $qo->drags = array(
-            array(
+        $qo->drags = [
+            [
                 'noofdrags' => $noofdrags,
                 'label' => '+',
-            )
-        );
-        $qo->drops = array();
+            ],
+        ];
+        $qo->drops = [];
         foreach ($zones as $zone) {
             if (!empty($zone->userSettings->correct)) {
                 $settings = $zone->computedSettings;
                 if ($settings->figure == 'rectangle') {
-                    $coords = round($settings->x * $this->width) . ',' . round($settings->y * $this->height). ';' .
+                    $coords = round($settings->x * $this->width) . ',' . round($settings->y * $this->height) . ';' .
                         round($settings->width * $this->width) . ',' . round($settings->height * $this->height);
                     $shape = 'rectangle';
                 } else if (abs(1 - $settings->height * $this->height / ($settings->width * $this->width)) < 0.05) {
                     $shape = 'circle';
                     $radius = round($settings->width * $this->width / 2);
                     $coords = round($settings->x * $this->width + $settings->width / 2) . ',' .
-                        round($settings->y * $this->height + $settings->height / 2). ';' . $radius;
+                        round($settings->y * $this->height + $settings->height / 2) . ';' . $radius;
                 } else {
                     $shape = 'polygon';
-                    $coord = array();
+                    $coord = [];
                     for ($angle = 0; $angle < 2 * M_PI; $angle += 30 * M_PI / 360) {
                         $coord[] = round(($settings->x + (1 - cos($angle)) * $settings->width / 2) * $this->width) . ',' .
                             round(($settings->y + (1 - sin($angle)) * $settings->height / 2) * $this->height);
                     }
-                    $coords = implode(';' , $coord);
+                    $coords = implode(';', $coord);
                 }
-                $qo->drops[] = array(
+                $qo->drops[] = [
                     'choice' => 1,
                     'shape' => $shape,
                     'coords' => $coords,
-                );
+                ];
             }
         }
         return $qo;
@@ -140,7 +140,7 @@ class type_hotspot extends type_mc {
 
         $fs = get_file_storage();
         $itemid = file_get_unused_draft_itemid();
-        $filerecord = array(
+        $filerecord = [
             'author'    => $this->get_author($metadata),
             'contextid' => context_user::instance($USER->id)->id,
             'component' => 'user',
@@ -149,7 +149,7 @@ class type_hotspot extends type_mc {
             'filepath'  => '/',
             'filename'  => preg_replace('/.*\\//', '', $filepath),
             'license'  => $this->get_license($metadata),
-        );
+        ];
 
         $file = $fs->create_file_from_pathname($filerecord, $filepath);
 

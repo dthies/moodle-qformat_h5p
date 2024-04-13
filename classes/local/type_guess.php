@@ -35,7 +35,6 @@ use context_user;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class type_guess extends type_mc {
-
     /**
      * Constructor
      *
@@ -48,11 +47,11 @@ class type_guess extends type_mc {
 
         $this->library = $content->library;
 
-        $this->params = (object) array(
+        $this->params = (object) [
             'answer' => $content->params->solutionText,
             'media' => $content->params->media,
             'question' => $content->params->taskDescription,
-        );
+        ];
         $this->params->media->type = $content->params->media;
 
         $this->tempdir = $tempdir;
@@ -67,14 +66,14 @@ class type_guess extends type_mc {
         $qo = $this->import_headers();
         $qo->qtype = 'shortanswer';
 
-        $qo->answer = array($this->params->answer);
-        $qo->fraction = array(1);
-        $qo->feedback = array(
-            array(
+        $qo->answer = [$this->params->answer];
+        $qo->fraction = [1];
+        $qo->feedback = [
+            [
                 'text' => '',
                 'format' => FORMAT_HTML,
-            ),
-        );
+            ],
+        ];
         return $qo;
     }
 }

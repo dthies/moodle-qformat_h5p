@@ -33,14 +33,15 @@ Currently supports import of following H5P content types
 * Fill in the Blank Question - creates a embedded answer (cloze) question 
 with embedded short answer
 * Advanced Fill in the Blanks Question - creates a embedded answer (cloze)
-question with embedded short answer or mulitchoice subquestions
+question with embedded short answer or multichoice subquestions
 * Drag the Text Question - creates a Drag and drop into text question
 * Mark The Words - Creates Word select if that question type is installed
 * Image Sequencing - Creates an ordering question if that question type is
 * Find the Hotspot/Multiple Hotspots- Creates a Drag and drop markers question 
+* Crossword - Creates separate short answer questions from the clues with the puzzle word as answer
 
 and any of above which are included in Branching Scenario, Column, Course
-Presentaion, Interactive Book, Interactive Video, or Quiz (Question Set).
+Presentation, Interactive Book, Interactive Video, or Quiz (Question Set).
 
 If you want to convert questions into H5P use the _Repurpose resources_ content
 type plugin https://moodle.org/plugins/contenttype_repurpose.

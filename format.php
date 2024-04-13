@@ -163,6 +163,21 @@ class qformat_h5p extends qformat_default {
                     }
                 }
                 return $actions;
+            case 'H5P.Crossword':
+                $dialogs = [];
+                foreach ($content->words as $word) {
+                    $dialogs[] = (object) [
+                        'params' => (object) [
+                            'question' => $word->clue,
+                            'answer' => $word->answer,
+                        ],
+                        'library' => 'Dialogcards',
+                        'metadata' => (object) [
+                            'title' => $word->answer,
+                        ],
+                    ];
+                }
+                return $dialogs;
             case 'H5P.Flashcards':
                 $content->dialogs = $content->cards;
                 // Handle like dialog cards.

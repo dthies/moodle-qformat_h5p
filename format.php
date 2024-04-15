@@ -62,7 +62,11 @@ class qformat_h5p extends qformat_default {
         return '.h5p';
     }
 
-    /** The string mime-type of the files that this plugin reads or writes. */
+    /**
+     * The string mime-type of the files that this plugin reads or writes.
+     *
+     * @return string
+     */
     public function mime_type() {
         // This is a hack to support version before h5p support.
         if (mimeinfo('type', $this->export_file_extension()) == 'document/unknown') {
